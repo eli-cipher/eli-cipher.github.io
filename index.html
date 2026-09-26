@@ -3,203 +3,981 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mohit Vaishnav — Eli Cipher</title>
-<meta name="description" content="Building space & security infrastructure in public.">
+<title>OPERATOR//SAT-LINK — Satellite Cybersecurity Portfolio</title>
+<meta name="description" content="Satellite communications & offensive space cybersecurity portfolio. RF signals, orbital recon, attack chains.">
+<meta name="theme-color" content="#05070f">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ELI CIPHER // SAT-LINK — Satellite Cybersecurity Portfolio">
+<meta property="og:description" content="19-y/o self-taught security researcher. Web & API offense → satellite, RF/SATCOM & space systems security. Every system has a cipher.">
+<meta property="og:image" content="og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+:root{
+  --bg:#05070f;
+  --bg2:#090d1a;
+  --panel:#0b1020;
+  --term:#04060d;
+  --line:rgba(56,225,255,.12);
+  --green:#39ff88;
+  --cyan:#22d3ee;
+  --red:#ff3860;
+  --amber:#ffb020;
+  --text:#c9d6e8;
+  --muted:#5d6f8a;
+  --head:#ffffff;
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Space Grotesk',sans-serif;
+}
+[data-theme="light"]{
+  --bg:#eef1f7;
+  --bg2:#e5e9f2;
+  --panel:#ffffff;
+  --term:#f7f9fd;
+  --line:rgba(15,50,90,.14);
+  --green:#0a9d54;
+  --cyan:#0e7f9e;
+  --red:#d61f4a;
+  --amber:#b57a00;
+  --text:#233247;
+  --muted:#61718c;
+  --head:#0b1526;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden;line-height:1.6}
+::selection{background:var(--green);color:#04140b}
+::-webkit-scrollbar{width:9px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:#1b2a45;border-radius:99px}
+::-webkit-scrollbar-thumb:hover{background:var(--cyan)}
 
-  :root{
-    --void:#05070c;
-    --panel:#0b1120;
-    --panel-2:#101a2e;
-    --line:#20304a;
-    --signal:#4fd1ff;
-    --amber:#ffb454;
-    --text:#edeff4;
-    --muted:#8b98af;
-    --mono:'IBM Plex Mono', monospace;
-    --sans:'IBM Plex Sans', sans-serif;
-  }
-  *{box-sizing:border-box; margin:0; padding:0;}
-  html{scroll-behavior:smooth;}
-  body{
-    background:var(--void);
-    color:var(--text);
-    font-family:var(--sans);
-    line-height:1.55;
-    min-height:100vh;
-  }
-  .wrap{max-width:640px; margin:0 auto; padding:0 24px;}
+/* ---------- overlays ---------- */
+.scanlines{position:fixed;inset:0;pointer-events:none;z-index:90;
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0 1px,transparent 1px 3px);mix-blend-mode:overlay}
+.vignette{position:fixed;inset:0;pointer-events:none;z-index:89;
+  background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,5,.55) 100%)}
 
-  .hero{
-    padding:72px 24px 40px;
-    text-align:left;
-    background:
-      radial-gradient(circle at 20% 10%, rgba(79,209,255,0.10), transparent 40%),
-      radial-gradient(circle at 90% 60%, rgba(255,180,84,0.06), transparent 45%);
-  }
-  .keymap{
-    font-family:var(--mono);
-    font-size:clamp(20px, 5vw, 28px);
-    font-weight:600;
-    margin-bottom:16px;
-    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
-  }
-  .keymap .alias{color:var(--signal);}
-  .keymap .arrow{color:var(--muted); font-weight:400; font-size:0.7em;}
+/* ---------- nav ---------- */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;
+  padding:18px 34px;backdrop-filter:blur(14px);background:rgba(5,7,15,.55);border-bottom:1px solid var(--line)}
+[data-theme="light"] nav{background:rgba(255,255,255,.72)}
+.logo{font-family:var(--mono);font-weight:700;font-size:15px;color:var(--head);letter-spacing:.5px;display:flex;align-items:center;gap:9px}
+.logo .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green);animation:blink 2.2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.logo em{color:var(--cyan);font-style:normal}
+.nav-links{display:flex;gap:28px;font-family:var(--mono);font-size:12.5px}
+.nav-links a{color:var(--muted);text-decoration:none;letter-spacing:1px;text-transform:uppercase;transition:color .25s;position:relative}
+.nav-links a:hover{color:var(--green)}
+.nav-links a::before{content:'[';opacity:0;margin-right:2px;color:var(--green);transition:opacity .2s}
+.nav-links a::after{content:']';opacity:0;margin-left:2px;color:var(--green);transition:opacity .2s}
+.nav-links a:hover::before,.nav-links a:hover::after{opacity:1}
+.status-pill{font-family:var(--mono);font-size:11px;color:var(--green);border:1px solid rgba(57,255,136,.3);
+  padding:5px 12px;border-radius:99px;display:flex;align-items:center;gap:7px}
+.status-pill i{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 1.4s infinite}
+@media(max-width:860px){.nav-links{display:none}}
 
-  .mission{
-    font-size:16.5px;
-    color:var(--text);
-    max-width:480px;
-    margin-bottom:8px;
-  }
-  .mission .now{color:var(--muted);}
-  .mission .now strong{color:var(--amber); font-weight:600;}
+/* ---------- hero ---------- */
+#hero{position:relative;height:100vh;min-height:640px;overflow:hidden}
+#space{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hero-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:0 7vw;pointer-events:none;z-index:5}
+.hero-tag{font-family:var(--mono);font-size:12px;color:var(--cyan);letter-spacing:4px;margin-bottom:18px;display:flex;align-items:center;gap:12px}
+.hero-tag::before{content:'';width:44px;height:1px;background:var(--cyan)}
+h1.hero-title{font-size:clamp(2.6rem,7.2vw,6rem);line-height:1.02;color:var(--head);font-weight:700;letter-spacing:-2px;max-width:820px}
+h1 .g{color:transparent;-webkit-text-stroke:1.5px var(--green)}
+h1 .c{color:var(--cyan)}
+.hero-sub{margin-top:22px;max-width:560px;color:var(--muted);font-size:clamp(.95rem,1.4vw,1.1rem);font-weight:300}
+.hero-cta{margin-top:34px;display:flex;gap:16px;pointer-events:auto}
+.btn{font-family:var(--mono);font-size:13px;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;
+  padding:14px 26px;border-radius:4px;transition:all .3s;display:inline-flex;align-items:center;gap:9px}
+.btn-primary{background:var(--green);color:#04140b;font-weight:700;box-shadow:0 0 30px rgba(57,255,136,.25)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 0 46px rgba(57,255,136,.5)}
+.btn-ghost{border:1px solid rgba(34,211,238,.4);color:var(--cyan)}
+.btn-ghost:hover{background:rgba(34,211,238,.08);transform:translateY(-3px)}
+.hero-terminal{position:absolute;right:5vw;bottom:9vh;width:min(430px,84vw);z-index:6;
+  background:rgba(6,10,20,.82);border:1px solid var(--line);border-radius:10px;backdrop-filter:blur(10px);
+  box-shadow:0 24px 70px rgba(0,0,0,.55);overflow:hidden}
+.ht-bar{display:flex;align-items:center;gap:8px;padding:11px 14px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.02)}
+.ht-bar span{width:10px;height:10px;border-radius:50%}
+.ht-bar span:nth-child(1){background:#ff5f57}.ht-bar span:nth-child(2){background:#febc2e}.ht-bar span:nth-child(3){background:#28c840}
+.ht-bar em{font-family:var(--mono);font-size:11px;color:var(--muted);margin-left:auto;font-style:normal;letter-spacing:1px}
+.ht-body{padding:16px;font-family:var(--mono);font-size:12.5px;min-height:158px;color:var(--green)}
+.ht-body .ln{display:block;white-space:pre-wrap;word-break:break-all}
+.ht-body .p{color:var(--cyan)}
+.ht-body .warn{color:var(--amber)}.ht-body .err{color:var(--red)}.ht-body .dim{color:var(--muted)}
+.cursor{display:inline-block;width:8px;height:14px;background:var(--green);vertical-align:-2px;animation:blink 1s steps(1) infinite}
+.scroll-hint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:6;font-family:var(--mono);
+  font-size:10px;letter-spacing:3px;color:var(--muted);text-align:center}
+.scroll-hint::after{content:'';display:block;width:1px;height:44px;margin:10px auto 0;
+  background:linear-gradient(var(--cyan),transparent);animation:drop 1.8s infinite}
+@keyframes drop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+@media(max-width:900px){.hero-terminal{position:relative;right:auto;bottom:auto;margin:26px 7vw 0}}
 
-  .status-row{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    margin-top:18px;
-    font-family:var(--mono);
-    font-size:11.5px;
-    letter-spacing:0.06em;
-    color:var(--muted);
-    border:1px solid var(--line);
-    padding:6px 12px;
-    border-radius:20px;
-  }
-  .dot{width:7px; height:7px; border-radius:50%; background:var(--signal); box-shadow:0 0 8px var(--signal);}
+/* ---------- sections ---------- */
+section{position:relative;padding:120px 7vw}
+.sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:56px}
+.sec-num{font-family:var(--mono);color:var(--cyan);font-size:13px;letter-spacing:2px}
+.sec-title{font-size:clamp(1.8rem,3.6vw,2.7rem);color:var(--head);font-weight:600;letter-spacing:-1px}
+.sec-line{flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+.reveal{opacity:0;transform:translateY(42px)}
 
-  .section{padding:36px 24px;}
-  .section-title{
-    font-family:var(--mono);
-    font-size:12px;
-    letter-spacing:0.14em;
-    text-transform:uppercase;
-    color:var(--muted);
-    margin-bottom:18px;
-  }
+/* about */
+.about-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:56px;align-items:start}
+.about-text{font-size:1.06rem;font-weight:300;color:#a9bad2}
+.about-text strong{color:var(--green);font-weight:500}
+.about-text .hl{color:var(--cyan)}
+.coords-box{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:24px;font-family:var(--mono);font-size:12.5px}
+.coords-box h4{color:var(--cyan);font-size:11px;letter-spacing:3px;margin-bottom:16px}
+.coord-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dashed rgba(255,255,255,.06);color:var(--muted)}
+.coord-row b{color:var(--green);font-weight:500}
+.waveform{margin-top:20px;width:100%;height:70px;display:block}
+@media(max-width:900px){.about-grid{grid-template-columns:1fr}}
 
-  .current-card{
-    border:1px solid var(--line);
-    background:var(--panel);
-    padding:20px;
-  }
-  .current-card h3{
-    font-family:var(--mono);
-    font-size:15px;
-    color:var(--text);
-    margin-bottom:8px;
-  }
-  .current-card p{font-size:14px; color:var(--muted); margin-bottom:14px;}
-  .current-card a{
-    font-family:var(--mono);
-    font-size:12.5px;
-    color:var(--signal);
-    text-decoration:none;
-    border-bottom:1px solid rgba(79,209,255,0.4);
-  }
-  .current-card a:hover{border-bottom-color:var(--signal);}
+/* arsenal */
+.arsenal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
+.skill-cat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:26px;transition:all .35s;position:relative;overflow:hidden}
+.skill-cat::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;
+  background:linear-gradient(90deg,var(--green),transparent);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.skill-cat:hover{transform:translateY(-6px);border-color:rgba(57,255,136,.3);box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.skill-cat:hover::before{transform:scaleX(1)}
+.skill-cat h4{color:var(--head);font-size:15px;display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.skill-cat h4 svg{color:var(--green);width:17px;height:17px}
+.skill{display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;padding:7px 0;color:var(--muted)}
+.skill b{color:var(--text);font-weight:400}
+.skill .lvl{color:var(--cyan)}
 
-  .links{display:flex; flex-direction:column; gap:10px;}
-  .link-row{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    border:1px solid var(--line);
-    background:var(--panel);
-    padding:14px 18px;
-    text-decoration:none;
-    color:var(--text);
-    transition:border-color 0.15s, background 0.15s;
-  }
-  .link-row:hover{border-color:var(--signal); background:var(--panel-2);}
-  .link-left{display:flex; align-items:center; gap:12px;}
-  .link-platform{font-family:var(--mono); font-size:14px; font-weight:600;}
-  .link-handle{font-family:var(--mono); font-size:12px; color:var(--muted);}
-  .link-arrow{color:var(--muted); font-family:var(--mono); font-size:14px;}
+/* attack chain */
+#attack{padding:0;background:var(--bg2)}
+.attack-stage{height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.attack-inner{width:min(1100px,88vw);display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.ac-steps{display:flex;flex-direction:column;gap:6px}
+.ac-step{display:flex;align-items:center;gap:18px;padding:15px 18px;border-radius:8px;border:1px solid transparent;
+  transition:all .45s;opacity:.32}
+.ac-step .idx{font-family:var(--mono);font-size:11px;color:var(--muted);width:34px}
+.ac-step .name{font-size:1.05rem;color:var(--head);font-weight:500;flex:1}
+.ac-step .desc{font-family:var(--mono);font-size:11px;color:var(--muted);display:block;margin-top:2px}
+.ac-step.active{opacity:1;background:rgba(57,255,136,.05);border-color:rgba(57,255,136,.3);transform:translateX(10px)}
+.ac-step.active .idx{color:var(--green)}
+.ac-step.done{opacity:.75}
+.ac-step.done .idx{color:var(--cyan)}
+.ac-step.pwned .name{color:var(--red)}
+.ac-terminal{background:#04060d;border:1px solid var(--line);border-radius:10px;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.5)}
+.ac-terminal .ht-body{min-height:280px;font-size:12px;line-height:1.9}
+.ac-progress{position:absolute;bottom:0;left:0;height:3px;width:100%;background:rgba(255,255,255,.05)}
+.ac-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--green));box-shadow:0 0 14px var(--green)}
+.attack-hint{position:absolute;top:90px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:11px;letter-spacing:3px;color:var(--muted)}
+@media(max-width:900px){.attack-inner{grid-template-columns:1fr;gap:30px}.ac-terminal .ht-body{min-height:180px}}
 
-  footer{
-    padding:32px 24px 60px;
-    text-align:left;
-    font-family:var(--mono);
-    font-size:11px;
-    color:var(--muted);
-    letter-spacing:0.05em;
-  }
+/* projects */
+.ops-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px}
+.op-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:28px;position:relative;
+  transition:all .35s;display:flex;flex-direction:column;gap:14px;text-decoration:none}
+.op-card:hover{transform:translateY(-8px);border-color:rgba(34,211,238,.35);box-shadow:0 26px 60px rgba(0,0,0,.5)}
+.op-top{display:flex;justify-content:space-between;align-items:center}
+.op-top svg{width:22px;height:22px;color:var(--cyan)}
+.op-tag{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--amber);border:1px solid rgba(255,176,32,.3);padding:4px 10px;border-radius:99px}
+.op-card h3{color:var(--head);font-size:1.15rem}
+.op-card p{color:var(--muted);font-size:.9rem;font-weight:300;flex:1}
+.op-meta{display:flex;gap:14px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.op-meta span{display:flex;align-items:center;gap:6px}
+.op-meta svg{width:13px;height:13px}
+
+/* ctf */
+.ctf-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px}
+.ctf-stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:26px;text-align:center}
+.ctf-stat .num{font-size:2.3rem;font-weight:700;color:var(--green);font-family:var(--mono)}
+.ctf-stat .lbl{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--muted);margin-top:6px;text-transform:uppercase}
+.writeups{margin-top:26px;font-family:var(--mono);font-size:13px}
+.writeups a{display:flex;justify-content:space-between;padding:15px 6px;border-bottom:1px dashed rgba(255,255,255,.08);
+  color:var(--text);text-decoration:none;transition:all .25s}
+.writeups a:hover{color:var(--green);padding-left:14px}
+.writeups a span{color:var(--muted);font-size:11px}
+
+/* contact */
+#contact{padding-bottom:60px}
+.contact-terminal{max-width:760px;margin:0 auto;background:var(--term);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.ct-body{padding:30px;font-family:var(--mono);font-size:14px;line-height:2.1}
+.ct-body .p{color:var(--cyan)}
+.ct-body a{color:var(--green);text-decoration:none;border-bottom:1px dashed rgba(57,255,136,.4)}
+.ct-body a:hover{background:rgba(57,255,136,.1)}
+.socials{display:flex;gap:14px;justify-content:center;margin-top:34px}
+.socials a{width:48px;height:48px;border:1px solid var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;
+  color:var(--muted);transition:all .3s}
+.socials a:hover{color:var(--green);border-color:rgba(57,255,136,.4);transform:translateY(-4px)}
+.socials svg{width:19px;height:19px}
+footer{text-align:center;padding:34px;font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:1px;border-top:1px solid var(--line)}
+footer b{color:var(--green);font-weight:400}
+
+/* ================= PHASE 2 ================= */
+/* ---------- boot loader ---------- */
+#boot{position:fixed;inset:0;z-index:460;background:var(--bg);display:flex;align-items:center;justify-content:center}
+.boot-inner{width:min(460px,86vw);text-align:center;font-family:var(--mono)}
+.boot-logo{font-size:22px;font-weight:700;color:var(--head);letter-spacing:6px;margin-bottom:26px}
+.boot-logo em{color:var(--green);font-style:normal}
+.boot-msg{font-size:12px;letter-spacing:3px;color:var(--cyan);margin-bottom:18px;min-height:16px}
+.boot-bar{height:3px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden;margin-bottom:12px}
+.boot-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--green));box-shadow:0 0 12px var(--green)}
+.boot-pct{font-size:12px;color:var(--green);margin-bottom:22px}
+.boot-log{text-align:left;font-size:11px;color:var(--muted);line-height:1.9;min-height:96px}
+[data-theme="light"] .boot-bar{background:rgba(12,32,64,.1)}
+
+/* ---------- custom crosshair cursor ---------- */
+#cursor{position:fixed;left:0;top:0;z-index:470;pointer-events:none;width:0;height:0;transition:transform .22s ease;will-change:transform}
+#cursor::before,#cursor::after{content:'';position:absolute;background:var(--green);box-shadow:0 0 6px rgba(57,255,136,.8)}
+#cursor::before{width:15px;height:1.5px;left:-7.5px;top:-.75px}
+#cursor::after{width:1.5px;height:15px;left:-.75px;top:-7.5px}
+#cursor i{position:absolute;width:3px;height:3px;background:var(--cyan);left:-1.5px;top:-1.5px;border-radius:50%}
+#cursor.hover{transform:rotate(45deg) scale(1.35)}
+#cursorRing{position:fixed;left:0;top:0;z-index:469;pointer-events:none;width:36px;height:36px;margin:-18px 0 0 -18px;border:1px solid rgba(34,211,238,.55);border-radius:50%;transition:transform .25s ease,border-color .25s;will-change:transform}
+#cursorRing.hover{transform:scale(1.9);border-color:var(--green)}
+@media(pointer:fine){body,a,button,input,textarea,.skill-cat,.op-card,.ctf-stat,.writeups a,.ac-step,.coords-box{cursor:none!important}}
+@media(pointer:coarse){#cursor,#cursorRing{display:none}}
+
+/* ---------- satellite payload manifest ---------- */
+.sat-hint{margin-top:22px;font-family:var(--mono);font-size:10.5px;letter-spacing:2px;color:var(--amber);display:flex;align-items:center;gap:8px;opacity:.9;pointer-events:none}
+.sat-hint svg{width:13px;height:13px;color:var(--amber)}
+.manifest{position:absolute;right:5vw;bottom:9vh;width:min(430px,84vw);z-index:7;background:rgba(6,10,20,.92);border:1px solid rgba(57,255,136,.28);border-radius:10px;backdrop-filter:blur(12px);box-shadow:0 24px 70px rgba(0,0,0,.65);padding:22px;opacity:0;visibility:hidden}
+.manifest.open{pointer-events:auto}
+[data-theme="light"] .manifest{background:rgba(255,255,255,.94);box-shadow:0 24px 70px rgba(20,40,80,.2)}
+.mf-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.mf-code{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--green)}
+#mfClose{background:none;border:1px solid var(--line);color:var(--muted);width:26px;height:26px;border-radius:6px;font-family:var(--mono);font-size:11px;transition:all .25s}
+#mfClose:hover{color:var(--red);border-color:rgba(255,56,96,.45)}
+.mf-tag{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--amber)}
+.manifest h3{color:var(--head);font-size:1.3rem;margin:8px 0 10px}
+.manifest p{color:var(--muted);font-size:.88rem;font-weight:300}
+.mf-stack{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 18px}
+.mf-stack span{font-family:var(--mono);font-size:10.5px;color:var(--cyan);border:1px solid rgba(34,211,238,.3);padding:4px 10px;border-radius:99px}
+@media(max-width:900px){.manifest{right:4vw;bottom:13vh;width:92vw}}
+
+/* ---------- sudo hack glitch ---------- */
+#glitch{position:fixed;inset:0;z-index:480;pointer-events:none;opacity:0;visibility:hidden;background:rgba(4,6,13,.88)}
+[data-theme="light"] #glitch{background:rgba(235,240,248,.9)}
+.gl-slice{position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,56,96,.14) 0 2px,transparent 2px 7px,rgba(34,211,238,.12) 7px 9px,transparent 9px 16px);mix-blend-mode:screen}
+.gl-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;font-family:var(--mono);font-weight:700;font-size:clamp(1.5rem,5vw,3.2rem);color:var(--green);letter-spacing:6px;text-shadow:0 0 24px rgba(57,255,136,.7),3px 0 0 rgba(255,56,96,.6),-3px 0 0 rgba(34,211,238,.6);white-space:nowrap}
+.gl-sub{display:block;font-size:11px;letter-spacing:3px;color:var(--cyan);margin-top:14px;font-weight:400}
+
+/* ---------- command palette ---------- */
+#cmdInput{background:transparent;border:none;outline:none;color:var(--green);font-family:var(--mono);font-size:14px;width:min(300px,55vw);caret-color:var(--green)}
+#cmdInput::placeholder{color:var(--muted);opacity:.55}
+#cmdOut{margin-top:10px;font-size:13px;line-height:1.9}
+#cmdOut .ln{display:block;white-space:pre-wrap;word-break:break-word}
+#cmdOut a{color:var(--green);text-decoration:none;border-bottom:1px dashed rgba(57,255,136,.4)}
+
+/* ---------- mobile attack-chain fallback ---------- */
+.chain-mobile{height:auto!important;padding:100px 7vw 120px!important}
+.chain-mobile .attack-hint,.chain-mobile .ac-progress{display:none}
+.chain-mobile .ac-step{opacity:1!important;transform:none!important;border-color:var(--line);margin-bottom:6px}
+.chain-mobile .ac-step.active{border-color:rgba(57,255,136,.3)}
+.chain-mobile .attack-inner{grid-template-columns:1fr}
+
+/* light-theme surface fixes */
+[data-theme="light"] .hero-terminal{background:rgba(255,255,255,.88);box-shadow:0 24px 70px rgba(20,40,80,.18)}
+[data-theme="light"] .vignette{background:radial-gradient(ellipse at center,transparent 60%,rgba(25,45,85,.14) 100%)}
+[data-theme="light"] .coord-row,[data-theme="light"] .writeups a{border-bottom-color:rgba(12,32,64,.14)}
+[data-theme="light"] .ac-progress{background:rgba(12,32,64,.08)}
+[data-theme="light"] .ht-bar,[data-theme="light"] .ht-body,[data-theme="light"] .ct-body{background:transparent}
+[data-theme="light"] .btn-primary{box-shadow:0 0 24px rgba(10,157,84,.25)}
+#themeToggle:hover{color:var(--green);border-color:rgba(57,255,136,.4)}
 </style>
 </head>
 <body>
 
-  <div class="hero">
-    <div class="wrap">
-      <div class="keymap">
-        <span class="alias">Eli Cipher</span>
-        <span class="arrow">⇄</span>
-        <span>Mohit Vaishnav</span>
-      </div>
-      <p class="mission">Building space & security infrastructure in public.</p>
-      <div class="status-row">
-        <span class="dot"></span>
-        <span>ACTIVE BUILD — SEE GITHUB FOR DAILY COMMITS</span>
-      </div>
+<div class="scanlines"></div>
+<div class="vignette"></div>
+
+<!-- boot loader -->
+<div id="boot">
+  <div class="boot-inner">
+    <div class="boot-logo">ELI CIPHER <em>//</em> SAT-LINK</div>
+    <div class="boot-msg" id="bootMsg">ESTABLISHING UPLINK…</div>
+    <div class="boot-bar"><i id="bootBar"></i></div>
+    <div class="boot-pct" id="bootPct">000%</div>
+    <div class="boot-log" id="bootLog"></div>
+  </div>
+</div>
+
+<!-- custom crosshair cursor -->
+<div id="cursor"><i></i></div>
+<div id="cursorRing"></div>
+
+<!-- sudo hack glitch -->
+<div id="glitch">
+  <div class="gl-slice"></div>
+  <div class="gl-text">ACCESS GRANTED<span class="gl-sub">ROOT SHELL ESTABLISHED // CLEARANCE LEVEL-5 // nice find, operator.</span></div>
+</div>
+
+<nav>
+  <div class="logo"><span class="dot"></span>ELI&nbsp;CIPHER<em>//</em>SAT-LINK</div>
+  <div class="nav-links">
+    <a href="#about">Profile</a><a href="#arsenal">Arsenal</a>
+    <a href="#attack">Attack&nbsp;Chain</a><a href="#ops">Operations</a><a href="#contact">Uplink</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <button id="themeToggle" title="Toggle theme" style="background:none;border:1px solid var(--line);border-radius:8px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;color:var(--muted);cursor:pointer;transition:all .3s">
+      <i data-lucide="sun" id="iconSun"></i><i data-lucide="moon" id="iconMoon" style="display:none"></i>
+    </button>
+    <div class="status-pill"><i></i>UPLINK ACTIVE</div>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header id="hero">
+  <canvas id="space"></canvas>
+  <div class="hero-overlay">
+    <div class="hero-tag">ELI CIPHER — SATELLITE &amp; SPACE SYSTEMS SECURITY</div>
+    <h1 class="hero-title">EVERY SYSTEM<br>HAS A <span class="g">CIPHER.</span><br><span class="c">I FIND IT.</span></h1>
+    <p class="hero-sub">19-year-old self-taught security researcher. Started with web &amp; API offense — now moving up the stack, straight into orbit: satellite links, RF/SATCOM, and space systems.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#ops"><i data-lucide="crosshair"></i>View Operations</a>
+      <a class="btn btn-ghost" href="#contact"><i data-lucide="satellite-dish"></i>Establish Uplink</a>
+    </div>
+    <div class="sat-hint"><i data-lucide="mouse-pointer-2"></i>CLICK AN ORBITING SATELLITE TO INSPECT ITS PAYLOAD</div>
+  </div>
+  <div class="hero-terminal">
+    <div class="ht-bar"><span></span><span></span><span></span><em>ground-station — zsh</em></div>
+    <div class="ht-body" id="heroTerm"></div>
+  </div>
+  <aside class="manifest" id="manifest" aria-hidden="true">
+  <div class="mf-bar"><span class="mf-code" id="mfCode">SAT-01 // PAYLOAD MANIFEST</span><button id="mfClose" aria-label="close manifest">&#10005;</button></div>
+  <div class="mf-tag" id="mfTag">PYTHON · OFFENSE</div>
+  <h3 id="mfName">HTTP-FUZZER</h3>
+  <p id="mfDesc"></p>
+  <div class="mf-stack" id="mfStack"></div>
+  <a class="btn btn-ghost" id="mfLink" href="#" target="_blank" rel="noopener" style="font-size:11px;padding:11px 18px"><i data-lucide="arrow-up-right"></i>OPEN PAYLOAD</a>
+</aside>
+<div class="scroll-hint">SCROLL TO DECRYPT</div>
+</header>
+
+<!-- ============ ABOUT ============ -->
+<section id="about">
+  <div class="sec-head reveal"><span class="sec-num">01</span><h2 class="sec-title">Operator Profile</h2><span class="sec-line"></span></div>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>I'm <strong>Eli Cipher</strong> — 19, from India, and entirely <span class="hl">self-taught</span>. The origin story is almost a cliché: at 14, I taught myself HTML because I thought it would let me "hack everything." By 15 I had mastered frontend development. At 17, a foundational cybersecurity program showed me what the work <strong>actually</strong> is — and I never looked back.</p>
+      <br>
+      <p>Today I'm transitioning from <strong>web &amp; API offense</strong> — where I fund my learning with bug bounty and vulnerability research — into the layer most people forget exists: <span class="hl">space</span>. My target orbit is satellite &amp; RF/SATCOM link security, and the attack surfaces that emerge when <strong>AI-driven spacecraft autonomy</strong> starts making its own decisions.</p>
+      <br>
+      <p>Top 10% on TryHackMe and climbing daily. Open to <strong>security research</strong>, <span class="hl">red team</span>, and <strong>space systems security</strong> opportunities.</p>
+    </div>
+    <div class="coords-box reveal">
+      <h4>// GROUND STATION TELEMETRY</h4>
+      <div class="coord-row"><span>CALLSIGN</span><b>ELI CIPHER</b></div>
+      <div class="coord-row"><span>LOCATION</span><b>INDIA · UTC+5:30</b></div>
+      <div class="coord-row"><span>TRAJECTORY</span><b>WEB/API → ORBIT</b></div>
+      <div class="coord-row"><span>THM RANK</span><b>TOP 10% · CLIMBING</b></div>
+      <div class="coord-row"><span>LEARNING</span><b>SDR · GNU RADIO · SATCOM</b></div>
+      <div class="coord-row"><span>STATUS</span><b style="color:var(--cyan)">LISTENING…</b></div>
+      <canvas class="waveform" id="wave"></canvas>
     </div>
   </div>
+</section>
 
-
-  <div class="section" style="padding-top:0;">
-    <div class="wrap">
-      <div class="section-title">Find me</div>
-      <div class="links">
-        <a class="link-row" href="https://linkedin.com/in/mohitvaishnav05" target="_blank" rel="noopener">
-          <div class="link-left">
-            <span class="link-platform">LinkedIn</span>
-            <span class="link-handle">Mohit Vaishnav</span>
-          </div>
-          <span class="link-arrow">↗</span>
-        </a>
-        <a class="link-row" href="https://github.com/MohitVaishnav2007" target="_blank" rel="noopener">
-          <div class="link-left">
-            <span class="link-platform">GitHub</span>
-            <span class="link-handle">MohitVaishnav2007</span>
-          </div>
-          <span class="link-arrow">↗</span>
-        </a>
-        <a class="link-row" href="https://x.com/elicipher_" target="_blank" rel="noopener">
-          <div class="link-left">
-            <span class="link-platform">X</span>
-            <span class="link-handle">@elicipher_</span>
-          </div>
-          <span class="link-arrow">↗</span>
-        </a>
-        <a class="link-row" href="https://www.youtube.com/@elicipher05" target="_blank" rel="noopener">
-          <div class="link-left">
-            <span class="link-platform">YouTube</span>
-            <span class="link-handle">@elicipher05</span>
-          </div>
-          <span class="link-arrow">↗</span>
-        </a>
-        <a class="link-row" href="https://tryhackme.com/p/elicipher05" target="_blank" rel="noopener">
-          <div class="link-left">
-            <span class="link-platform">TryHackMe</span>
-            <span class="link-handle">elicipher05</span>
-          </div>
-          <span class="link-arrow">↗</span>
-        </a>
-        <a class="link-row" href="https://www.instagram.com/elicipher_/" target="_blank" rel="noopener">
-          <div class="link-left">
-            <span class="link-platform">Instagram</span>
-            <span class="link-handle">elicipher_</span>
-          </div>
-          <span class="link-arrow">↗</span>
-        </a>
-      </div>
+<!-- ============ ARSENAL ============ -->
+<section id="arsenal">
+  <div class="sec-head reveal"><span class="sec-num">02</span><h2 class="sec-title">Arsenal</h2><span class="sec-line"></span></div>
+  <div class="arsenal-grid reveal">
+    <div class="skill-cat">
+      <h4><i data-lucide="crosshair"></i>OFFENSE — CURRENT</h4>
+      <div class="skill"><b>Web / API Testing</b><span class="lvl">████████░░</span></div>
+      <div class="skill"><b>Burp Suite</b><span class="lvl">███████░░░</span></div>
+      <div class="skill"><b>Fuzzing (custom tooling)</b><span class="lvl">████████░░</span></div>
+      <div class="skill"><b>OWASP Top 10</b><span class="lvl">████████░░</span></div>
+    </div>
+    <div class="skill-cat">
+      <h4><i data-lucide="code-2"></i>LANGUAGES / CORE</h4>
+      <div class="skill"><b>Python</b><span class="lvl">████████░░</span></div>
+      <div class="skill"><b>JavaScript / HTML / CSS</b><span class="lvl">█████████░</span></div>
+      <div class="skill"><b>Bash / Linux</b><span class="lvl">███████░░░</span></div>
+      <div class="skill"><b>Docker</b><span class="lvl">███████░░░</span></div>
+    </div>
+    <div class="skill-cat">
+      <h4><i data-lucide="radio-tower"></i>MISSION TARGET — IN PROGRESS</h4>
+      <div class="skill"><b>RF Fundamentals</b><span class="lvl">██████░░░░</span></div>
+      <div class="skill"><b>SDR / GNU Radio</b><span class="lvl">██████░░░░</span></div>
+      <div class="skill"><b>SATCOM Link Security</b><span class="lvl">█████░░░░░</span></div>
+      <div class="skill"><b>Space Systems / CCSDS</b><span class="lvl">█████░░░░░</span></div>
+    </div>
+    <div class="skill-cat">
+      <h4><i data-lucide="radar"></i>DETECTION & OPS</h4>
+      <div class="skill"><b>SIEM Pipelines (Docker lab)</b><span class="lvl">███████░░░</span></div>
+      <div class="skill"><b>Wireshark</b><span class="lvl">███████░░░</span></div>
+      <div class="skill"><b>Attack Simulation</b><span class="lvl">███████░░░</span></div>
+      <div class="skill"><b>Log Analysis</b><span class="lvl">██████░░░░</span></div>
     </div>
   </div>
+</section>
+<!-- ============ ATTACK CHAIN ============ -->
+<section id="attack">
+  <div class="attack-stage" id="attackStage">
+    <div class="attack-hint">// SIMULATED SATELLITE BREACH — SCROLL TO EXECUTE //</div>
+    <div class="attack-inner">
+      <div class="ac-steps" id="acSteps">
+        <div class="sec-head" style="margin-bottom:26px"><span class="sec-num">03</span><h2 class="sec-title">Attack Chain</h2></div>
+        <div class="ac-step" data-step="0"><span class="idx">T+00</span><div><span class="name">Recon</span><span class="desc">catalog NORAD IDs · pass predictions · footprinting</span></div></div>
+        <div class="ac-step" data-step="1"><span class="idx">T+01</span><div><span class="name">Signal Acquisition</span><span class="desc">SDR lock · Doppler correction · demodulation</span></div></div>
+        <div class="ac-step" data-step="2"><span class="idx">T+02</span><div><span class="name">Protocol Analysis</span><span class="desc">frame dissection · CCSDS parsing · crypto audit</span></div></div>
+        <div class="ac-step" data-step="3"><span class="idx">T+03</span><div><span class="name">Exploitation</span><span class="desc">command injection · replay · firmware backdoor</span></div></div>
+        <div class="ac-step" data-step="4"><span class="idx">T+04</span><div><span class="name">Intercept &amp; Flag</span><span class="desc">downlink captured · root shell · telemetry pwned</span></div></div>
+      </div>
+      <div class="ac-terminal">
+        <div class="ht-bar"><span></span><span></span><span></span><em>exploit-framework — session 1</em></div>
+        <div class="ht-body" id="acTerm"></div>
+      </div>
+    </div>
+    <div class="ac-progress"><i id="acBar"></i></div>
+  </div>
+</section>
 
-  <footer>MOHIT VAISHNAV ⇄ ELI CIPHER</footer>
+<!-- ============ PROJECTS ============ -->
+<section id="ops">
+  <div class="sec-head reveal"><span class="sec-num">04</span><h2 class="sec-title">Operations</h2><span class="sec-line"></span></div>
+  <div class="ops-grid reveal">
+    <a class="op-card" href="https://github.com/eli-cipher" target="_blank" rel="noopener">
+      <div class="op-top"><i data-lucide="bug"></i><span class="op-tag">PYTHON · OFFENSE</span></div>
+      <h3>HTTP-FUZZER</h3>
+      <p>Python-based HTTP request fuzzer that hunts for web vulnerabilities — XSS, SQL injection, and directory traversal — built from scratch to understand attacks at the request level, not just point tools.</p>
+      <div class="op-meta"><span><i data-lucide="code-2"></i>Python</span><span><i data-lucide="target"></i>XSS · SQLi · LFI</span></div>
+    </a>
+    <a class="op-card" href="https://github.com/eli-cipher" target="_blank" rel="noopener">
+      <div class="op-top"><i data-lucide="container"></i><span class="op-tag">DOCKER · BLUE TEAM</span></div>
+      <h3>SOC-DOCKER-LAB</h3>
+      <p>A full SOC pipeline in containers — attack and defense in one box. Simulates brute-force with Hydra from a Kali container against an Nginx server, then detects and logs it end-to-end.</p>
+      <div class="op-meta"><span><i data-lucide="container"></i>Docker</span><span><i data-lucide="swords"></i>Hydra · Nginx · SIEM</span></div>
+    </a>
+    <a class="op-card" href="https://github.com/eli-cipher/web-security-notes" target="_blank" rel="noopener">
+      <div class="op-top"><i data-lucide="notebook-pen"></i><span class="op-tag">RESEARCH · DAILY</span></div>
+      <h3>WEB-SECURITY-NOTES</h3>
+      <p>Daily-updated knowledge base from PortSwigger Web Security Academy labs, organized across 10 vulnerability categories. Every solved lab logged as Approach → Why → Tool. 48 commits and counting.</p>
+      <div class="op-meta"><span><i data-lucide="git-commit-horizontal"></i>48 commits</span><span><i data-lucide="layers"></i>10 categories</span></div>
+    </a>
+    <a class="op-card" href="https://github.com/eli-cipher" target="_blank" rel="noopener">
+      <div class="op-top"><i data-lucide="mail-warning"></i><span class="op-tag">PYTHON · PHISHING</span></div>
+      <h3>EMAIL-HEADER-ANALYZER</h3>
+      <p>Python tool that dissects email headers to detect phishing, spam, and suspicious activity — extracts key fields and IPs, then scores the risk.</p>
+      <div class="op-meta"><span><i data-lucide="code-2"></i>Python</span><span><i data-lucide="shield-check"></i>Phishing · OSINT</span></div>
+    </a>
+  </div>
+</section>
 
+<!-- ============ CTF / RESEARCH ============ -->
+<section id="ctf">
+  <div class="sec-head reveal"><span class="sec-num">05</span><h2 class="sec-title">CTF &amp; Research</h2><span class="sec-line"></span></div>
+  <div class="ctf-grid reveal">
+    <div class="ctf-stat"><div class="num" data-count="10" data-suffix="%">0</div><div class="lbl">TryHackMe · Global Rank</div></div>
+    <div class="ctf-stat"><div class="num" data-count="251" data-suffix="K">0</div><div class="lbl">THM World Ranking</div></div>
+    <div class="ctf-stat"><div class="num" data-count="48">0</div><div class="lbl">Commits · Security Notes</div></div>
+    <div class="ctf-stat"><div class="num" data-count="4">0</div><div class="lbl">Tools &amp; Labs Shipped</div></div>
+  </div>
+  <div class="writeups reveal">
+    <a href="https://tryhackme.com/p/elicipher05" target="_blank" rel="noopener">TryHackMe Hackers Holiday Challenge — 2026 participant <span>CTF · 2026</span></a>
+    <a href="#">Satellite telecommand replay: when weak crypto meets LEO <span>INCOMING TRANSMISSION</span></a>
+    <a href="#">From web payloads to RF payloads: my move into SATCOM <span>INCOMING TRANSMISSION</span></a>
+    <a href="#">PortSwigger lab notes: 10 vuln categories, documented daily <span>ONGOING · LIVE</span></a>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact">
+  <div class="sec-head reveal"><span class="sec-num">06</span><h2 class="sec-title">Establish Uplink</h2><span class="sec-line"></span></div>
+  <div class="contact-terminal reveal">
+    <div class="ht-bar"><span></span><span></span><span></span><em>uplink — secure channel</em></div>
+    <div class="ct-body">
+      <span class="p">operator@sat-link:~$</span> ./contact --initiate<br>
+      <span class="dim" style="color:var(--muted)">[+] encrypted channel established ....... OK</span><br>
+      <span class="dim" style="color:var(--muted)">[+] handshake verified .................. OK</span><br>
+      &gt; DROP A TRANSMISSION: <a href="mailto:alicipher05@gmail.com">alicipher05@gmail.com</a><br>
+      &gt; FREQUENCY: always monitoring. Response time &lt; 24h.
+      <br><span class="p">operator@sat-link:~$</span> <input id="cmdInput" type="text" autocomplete="off" spellcheck="false" placeholder="type 'help'" aria-label="terminal command input">
+      <div id="cmdOut"></div>
+    </div>
+  </div>
+  <div class="socials reveal">
+    <a href="https://github.com/eli-cipher" target="_blank" rel="noopener" title="GitHub"><i data-lucide="github"></i></a>
+    <a href="https://www.linkedin.com/in/mohitvaishnav05" target="_blank" rel="noopener" title="LinkedIn"><i data-lucide="linkedin"></i></a>
+    <a href="https://x.com/elicipher_" target="_blank" rel="noopener" title="X"><i data-lucide="twitter"></i></a>
+    <a href="https://tryhackme.com/p/elicipher05" target="_blank" rel="noopener" title="TryHackMe"><i data-lucide="flag"></i></a>
+    <a href="https://www.youtube.com/@elicipher05" target="_blank" rel="noopener" title="YouTube"><i data-lucide="youtube"></i></a>
+    <a href="https://www.instagram.com/elicipher_" target="_blank" rel="noopener" title="Instagram"><i data-lucide="instagram"></i></a>
+    <a href="mailto:alicipher05@gmail.com" title="Email"><i data-lucide="mail"></i></a>
+  </div>
+</section>
+
+<footer>
+  <b>ELI CIPHER // SAT-LINK</b> — every system has a cipher // self-taught, going orbital // <span id="yr"></span>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+document.getElementById('yr').textContent = new Date().getFullYear();
+lucide.createIcons();
+gsap.registerPlugin(ScrollTrigger);
+
+/* ================= THREE.JS — ORBITAL SCENE ================= */
+(function(){
+  const canvas = document.getElementById('space');
+  const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0x05070f, 0.045);
+  const camera = new THREE.PerspectiveCamera(55, 1, .1, 100);
+  camera.position.set(0, 1.6, 8.5);
+
+  const GREEN = 0x39ff88, CYAN = 0x22d3ee;
+
+  // starfield
+  const starGeo = new THREE.BufferGeometry();
+  const starPos = new Float32Array(2200 * 3);
+  for(let i=0;i<starPos.length;i++) starPos[i] = (Math.random()-.5) * 70;
+  starGeo.setAttribute('position', new THREE.BufferAttribute(starPos,3));
+  const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({color:0x8fb8ff,size:.045,transparent:true,opacity:.75}));
+  scene.add(stars);
+
+  // Earth — dotted sphere + faint wireframe + glow shell
+  const earthGroup = new THREE.Group();
+  const dotGeo = new THREE.SphereGeometry(2.05, 46, 46);
+  const earth = new THREE.Points(dotGeo, new THREE.PointsMaterial({color:GREEN,size:.022,transparent:true,opacity:.85}));
+  const wire = new THREE.Mesh(new THREE.SphereGeometry(2.05,20,20),
+    new THREE.MeshBasicMaterial({color:0x0e3a2a,wireframe:true,transparent:true,opacity:.16}));
+  const glow = new THREE.Mesh(new THREE.SphereGeometry(2.32,32,32),
+    new THREE.MeshBasicMaterial({color:CYAN,transparent:true,opacity:.05,side:THREE.BackSide,blending:THREE.AdditiveBlending}));
+  earthGroup.add(earth, wire, glow);
+  scene.add(earthGroup);
+
+  // make a satellite (bus + solar panels)
+  function makeSat(){
+    const g = new THREE.Group();
+    const mat = new THREE.MeshBasicMaterial({color:0xdfe8f5});
+    const bus = new THREE.Mesh(new THREE.BoxGeometry(.16,.12,.12), mat);
+    const panelMat = new THREE.MeshBasicMaterial({color:CYAN,transparent:true,opacity:.85});
+    const p1 = new THREE.Mesh(new THREE.BoxGeometry(.34,.005,.1), panelMat); p1.position.x = .26;
+    const p2 = p1.clone(); p2.position.x = -.26;
+    const beacon = new THREE.Mesh(new THREE.SphereGeometry(.028,8,8),
+      new THREE.MeshBasicMaterial({color:0xff3860}));
+    beacon.position.y = .09;
+    g.userData.beacon = beacon;
+    g.add(bus,p1,p2,beacon);
+    return g;
+  }
+
+  // orbit ring line
+  function makeRing(r, color){
+    const pts = [];
+    for(let i=0;i<=128;i++){ const a=i/128*Math.PI*2; pts.push(new THREE.Vector3(Math.cos(a)*r,0,Math.sin(a)*r)); }
+    const geo = new THREE.BufferGeometry().setFromPoints(pts);
+    return new THREE.Line(geo, new THREE.LineBasicMaterial({color,transparent:true,opacity:.22}));
+  }
+
+  // build 3 satellites on tilted orbits + beams
+  const sats = [];
+  const orbitDefs = [
+    {r:3.3, tilt:[.5,0,.15], speed:.34, color:GREEN},
+    {r:4.1, tilt:[-.35,.4,0], speed:-.22, color:CYAN},
+    {r:4.8, tilt:[.2,-.3,.5], speed:.16, color:0xffb020}
+  ];
+  const beamMat = new THREE.LineBasicMaterial({color:GREEN,transparent:true,opacity:0});
+  orbitDefs.forEach(d=>{
+    const pivot = new THREE.Group();
+    pivot.rotation.set(...d.tilt);
+    pivot.add(makeRing(d.r, d.color));
+    const sat = makeSat();
+    pivot.add(sat);
+    const beamGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]);
+    const beam = new THREE.Line(beamGeo, beamMat.clone());
+    scene.add(beam);
+    scene.add(pivot);
+    sats.push({pivot, sat, beam, r:d.r, speed:d.speed, angle:Math.random()*Math.PI*2, txPhase:Math.random()*10});
+    sat.userData.satIdx = sats.length-1; sat.userData.targetScale = 1; sat.userData.active = false;
+    sat.traverse(o => o.userData.satIdx = sats.length-1);
+  });
+
+  // theme-aware colors
+  const themeColors = {
+    dark :{fog:0x05070f, stars:0x8fb8ff, earth:GREEN,       wire:0x0e3a2a, glow:CYAN},
+    light:{fog:0xdfe5ef, stars:0x33415c, earth:0x0a7d4d,    wire:0x9db4cc, glow:0x22d3ee}
+  };
+  function applyTheme(t){
+    const c = themeColors[t] || themeColors.dark;
+    scene.fog.color.setHex(c.fog);
+    stars.material.color.setHex(c.stars);
+    earth.material.color.setHex(c.earth);
+    wire.material.color.setHex(c.wire);
+    glow.material.color.setHex(c.glow);
+  }
+  window.__spaceTheme = applyTheme;
+  window.__satCam = camera;
+  applyTheme(document.documentElement.getAttribute('data-theme') || 'dark');
+  window.__sats = sats;
+
+  // mouse parallax
+  let mx=0, my=0, tx=0, ty=0;
+  addEventListener('mousemove', e=>{ mx=(e.clientX/innerWidth-.5)*2; my=(e.clientY/innerHeight-.5)*2; });
+
+  function resize(){
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    renderer.setSize(w,h,false);
+    camera.aspect = w/h; camera.updateProjectionMatrix();
+  }
+  addEventListener('resize', resize); resize();
+
+  const clock = new THREE.Clock();
+  const v = new THREE.Vector3();
+  (function animate(){
+    requestAnimationFrame(animate);
+    const t = clock.getElapsedTime();
+    tx += (mx-tx)*.04; ty += (my-ty)*.04;
+    camera.position.x = tx*1.1; camera.position.y = 1.6 - ty*.6;
+    camera.lookAt(0,0,0);
+
+    earthGroup.rotation.y = t*.05;
+    stars.rotation.y = t*.008;
+
+    sats.forEach(s=>{
+      s.angle += s.speed*.008;
+      s.sat.position.set(Math.cos(s.angle)*s.r, 0, Math.sin(s.angle)*s.r);
+      s.sat.rotation.y = -s.angle;                       // keep panels tangent
+      s.sat.getWorldPosition(v);
+      // RF beam: satellite -> earth, pulses on a random duty cycle
+      const duty = (Math.sin(t*1.4 + s.txPhase*7) + 1) / 2;
+      const on = s.sat.userData.active ? true : duty > .45;
+      s.sat.scale.setScalar(s.sat.scale.x + (s.sat.userData.targetScale - s.sat.scale.x) * .12);
+      s.beam.material.opacity += ((s.sat.userData.active ? .75 : (on ? .5 : 0)) - s.beam.material.opacity) * .08;
+      s.sat.userData.beacon.material.color.setHex(s.sat.userData.active ? GREEN : 0xff3860);
+      const pos = s.beam.geometry.attributes.position;
+      pos.setXYZ(0, v.x, v.y, v.z); pos.setXYZ(1, 0,0,0); pos.needsUpdate = true;
+    });
+    renderer.render(scene, camera);
+  })();
+})();
+
+/* ================= HERO TERMINAL TYPING ================= */
+(function(){
+  const el = document.getElementById('heroTerm');
+  const lines = [
+    {t:'$ ./init-groundstation.sh', c:'p'},
+    {t:'[+] SDR devices found ......... 2', c:''},
+    {t:'[+] antenna tracking .......... LOCKED', c:''},
+    {t:'[+] decoding downlink ......... CCSDS TM', c:''},
+    {t:'[!] warning: unencrypted telemetry detected', c:'warn'},
+    {t:'$ whoami → operator // clearance: LEVEL-5', c:'p'},
+    {t:'> welcome, visitor. signal acquired.', c:''},
+  ];
+  let li=0, ci=0, out='';
+  const cur = '<span class="cursor"></span>';
+  function type(){
+    if(li >= lines.length){ el.innerHTML = out; return; }
+    const line = lines[li];
+    if(ci === 0 && li > 0) out += '<br>';
+    if(ci <= line.t.length){
+      const done = line.t.slice(0, ci);
+      el.innerHTML = out + `<span class="ln ${line.c}">${done}</span>` + cur;
+      ci++; setTimeout(type, line.c==='p' ? 26 : 12);
+    } else {
+      out += `<span class="ln ${line.c}">${line.t}</span>`;
+      li++; ci=0; setTimeout(type, 300);
+    }
+  }
+  let __htStarted = false;
+  window.__startHeroTerm = function(){ if(__htStarted) return; __htStarted = true; setTimeout(type, 500); };
+})();
+
+/* ================= WAVEFORM (RF spectrum vibe) ================= */
+(function(){
+  const c = document.getElementById('wave'), x = c.getContext('2d');
+  function size(){ c.width = c.clientWidth*2; c.height = c.clientHeight*2; }
+  addEventListener('resize', size); size();
+  let t=0;
+  (function draw(){
+    requestAnimationFrame(draw);
+    t += .03;
+    const w=c.width, h=c.height;
+    x.clearRect(0,0,w,h);
+    x.strokeStyle='rgba(57,255,136,.9)'; x.lineWidth=2.4; x.beginPath();
+    for(let i=0;i<w;i+=3){
+      const y = h/2 + Math.sin(i*.02 + t*3)*Math.sin(i*.005 + t)*Math.sin(t+i*.001)*h*.38;
+      i===0 ? x.moveTo(i,y) : x.lineTo(i,y);
+    }
+    x.stroke();
+  })();
+})();
+
+/* ================= ATTACK CHAIN (pinned scroll) ================= */
+(function(){
+  const stages = [...document.querySelectorAll('.ac-step')];
+  const term = document.getElementById('acTerm');
+  const bar = document.getElementById('acBar');
+  const logs = [
+    [['$ ./recon --target LEO-1337','p'],['[*] cataloging NORAD IDs... 3,412 objects',''],['[*] next pass: 14:22 UTC · elev 74°',''],['[+] ground station footprint mapped','warn']],
+    [['$ ./acquire --freq 435.350MHz','p'],['[*] SDR lock ......... OK',''],['[*] Doppler correction .. ±3.2 kHz',''],['[+] carrier locked. SNR 18dB','warn']],
+    [['$ ./dissect --mode CCSDS','p'],['[*] frame sync ........ OK (ASM 1ACFFC1D)',''],['[+] TM frame #004412 — UNENCRYPTED','warn'],['[!] TC uplink channel identified','err']],
+    [['$ ./exploit --tc-replay','p'],['[*] crafting forged telecommand...',''],['[+] injection accepted by spacecraft','warn'],['[!] shell opened: spacecraft:/#','err']],
+    [['$ cat /flag.txt','p'],['[+] FLAG{c0ngr4ts_y0u_0wn_th3_sk1es}','warn'],['[*] telemetry stream captured → disk',''],['[+] chain complete. disengaging...',''],['> thanks for scrolling. now hire this operator.','p']],
+  ];
+  let curStage = -1;
+  function renderTerm(idx){
+    let html='';
+    for(let i=0;i<=idx;i++){
+      logs[i].forEach(l=>{ html += `<span class="ln ${l[1]}">${l[0]}</span>`; });
+      if(i<idx) html+='<br>';
+    }
+    term.innerHTML = html + '<span class="cursor"></span>';
+  }
+  if(matchMedia('(max-width:900px)').matches){
+    document.getElementById('attackStage').classList.add('chain-mobile');
+    stages.forEach((el,i)=>{ el.classList.add('done'); el.style.opacity = 1; if(i===4) el.classList.add('active','pwned'); });
+    renderTerm(4); bar.style.width = '100%';
+  } else ScrollTrigger.create({
+    trigger:'#attackStage', start:'top top', end:'+=2600', pin:true, scrub:.4,
+    onUpdate(self){
+      bar.style.width = (self.progress*100)+'%';
+      const s = Math.min(4, Math.floor(self.progress * 5.4));
+      if(s !== curStage){
+        curStage = s;
+        stages.forEach((el,i)=>{
+          el.classList.toggle('active', i===s);
+          el.classList.toggle('done', i<s);
+          el.classList.toggle('pwned', i===4 && s===4);
+        });
+        renderTerm(s);
+      }
+    }
+  });
+})();
+
+/* ================= SCROLL REVEALS + COUNTERS ================= */
+gsap.utils.toArray('.reveal').forEach(el=>{
+  gsap.to(el,{opacity:1,y:0,duration:1,ease:'power3.out',
+    scrollTrigger:{trigger:el,start:'top 85%'}});
+});
+document.querySelectorAll('[data-count]').forEach(el=>{
+  const target = +el.dataset.count, suf = el.dataset.suffix || '';
+  ScrollTrigger.create({trigger:el,start:'top 88%',once:true,
+    onEnter:()=>gsap.to({v:0},{v:target,duration:1.8,ease:'power2.out',
+      onUpdate:function(){ el.textContent = Math.round(this.targets()[0].v) + suf; }})});
+});
+
+/* ================= DARK / LIGHT TOGGLE ================= */
+(function(){
+  const root = document.documentElement, btn = document.getElementById('themeToggle');
+  const sun = document.getElementById('iconSun'), moon = document.getElementById('iconMoon');
+  function set(t){
+    root.setAttribute('data-theme', t);
+    try{ localStorage.setItem('ec-theme', t); }catch(e){}
+    if(sun) sun.style.display = t === 'light' ? 'none' : 'block';
+    if(moon) moon.style.display = t === 'light' ? 'block' : 'none';
+    if(window.__spaceTheme) window.__spaceTheme(t);
+  }
+  btn.addEventListener('click', ()=> set(root.getAttribute('data-theme') === 'light' ? 'dark' : 'light'));
+  let saved = 'dark';
+  try{ saved = localStorage.getItem('ec-theme') || 'dark'; }catch(e){}
+  set(saved);
+})();
+
+/* ================= PHASE 2 ================= */
+/* ---------- boot sequence ---------- */
+(function(){
+  const boot = document.getElementById('boot'); if(!boot) return;
+  const bar = document.getElementById('bootBar'), pct = document.getElementById('bootPct'),
+        msg = document.getElementById('bootMsg'), log = document.getElementById('bootLog');
+  const logs = ['> initializing ground station hardware...','> SDR handshake .......... OK',
+                '> antenna servo lock ..... OK','> decrypting downlink .... OK',
+                '> operator session ....... AUTHORIZED'];
+  const state = {v:0}; let finished = false;
+  function finish(){
+    if(finished) return; finished = true;
+    msg.textContent = 'UPLINK ESTABLISHED';
+    setTimeout(()=>{
+      gsap.to(boot, {yPercent:-100, duration:.9, ease:'power4.inOut', onComplete:()=>boot.remove()});
+      if(window.__startHeroTerm) window.__startHeroTerm();
+    }, 420);
+  }
+  gsap.to(state, {v:100, duration:2.3, ease:'power2.inOut', onUpdate(){
+    const v = Math.round(state.v);
+    bar.style.width = v + '%';
+    pct.textContent = String(v).padStart(3,'0') + '%';
+    const li = Math.min(logs.length-1, Math.floor(v/100*logs.length));
+    log.innerHTML = logs.slice(0, li+1).map(l=>'<div>'+l+'</div>').join('');
+    if(v >= 100) finish();
+  }});
+  boot.addEventListener('click', finish);
+  setTimeout(finish, 6000); // safety net
+})();
+
+/* ---------- custom crosshair cursor ---------- */
+(function(){
+  if(!matchMedia('(pointer:fine)').matches) return;
+  const c = document.getElementById('cursor'), r = document.getElementById('cursorRing');
+  let mx = innerWidth/2, my = innerHeight/2, cx = mx, cy = my, rx = mx, ry = my;
+  addEventListener('mousemove', e=>{
+    mx = e.clientX; my = e.clientY;
+    const t = e.target.closest('a,button,input,.skill-cat,.op-card,.ac-step,.ctf-stat,.writeups a,.socials a,.coords-box');
+    c.classList.toggle('hover', !!t); r.classList.toggle('hover', !!t);
+  });
+  document.addEventListener('mouseleave', ()=>{ c.style.opacity = 0; r.style.opacity = 0; });
+  document.addEventListener('mouseenter', ()=>{ c.style.opacity = 1; r.style.opacity = 1; });
+  (function loop(){
+    requestAnimationFrame(loop);
+    cx += (mx-cx)*.55; cy += (my-cy)*.55; rx += (mx-rx)*.18; ry += (my-ry)*.18;
+    c.style.left = cx+'px'; c.style.top = cy+'px';
+    r.style.left = rx+'px'; r.style.top = ry+'px';
+  })();
+})();
+
+/* ---------- clickable satellites → payload manifest ---------- */
+(function(){
+  const sats = window.__sats, canvas = document.getElementById('space');
+  if(!sats || !canvas) return;
+  const PAYLOADS = [
+    { code:'SAT-01', name:'HTTP-FUZZER', tag:'PYTHON · OFFENSE',
+      desc:'Python-based HTTP request fuzzer that hunts XSS, SQL injection and directory traversal — built from scratch to understand attacks at the request level, not just point tools.',
+      stack:['Python','Fuzzing','XSS · SQLi · LFI'], link:'https://github.com/eli-cipher' },
+    { code:'SAT-02', name:'SOC-DOCKER-LAB', tag:'DOCKER · BLUE TEAM',
+      desc:'A full SOC pipeline in containers — attack and defense in one box. Simulates brute-force with Hydra from a Kali container against an Nginx server, then detects and logs it end-to-end.',
+      stack:['Docker','Hydra · Nginx','SIEM pipeline'], link:'https://github.com/eli-cipher' },
+    { code:'SAT-03', name:'WEB-SECURITY-NOTES', tag:'RESEARCH · DAILY',
+      desc:'Daily-updated knowledge base from PortSwigger Web Security Academy labs, organized across 10 vulnerability categories. Every solved lab logged as Approach → Why → Tool. 48 commits and counting.',
+      stack:['48 commits','10 categories','PortSwigger'], link:'https://github.com/eli-cipher/web-security-notes' },
+  ];
+  const ray = new THREE.Raycaster(), ptr = new THREE.Vector2();
+  const mf = document.getElementById('manifest');
+  const el = id => document.getElementById(id);
+  let active = -1;
+  function pick(e){
+    const r = canvas.getBoundingClientRect();
+    ptr.x = ((e.clientX - r.left)/r.width)*2 - 1;
+    ptr.y = -((e.clientY - r.top)/r.height)*2 + 1;
+    ray.setFromCamera(ptr, window.__satCam);
+    const hits = ray.intersectObjects(sats.map(s=>s.sat), true);
+    return hits.length ? hits[0].object.userData.satIdx : -1;
+  }
+  function openManifest(i){
+    active = i; const p = PAYLOADS[i];
+    sats.forEach((s,j)=>{ s.sat.userData.active = (j===i); s.sat.userData.targetScale = j===i ? 1.8 : 1; });
+    el('mfCode').textContent = p.code + ' // PAYLOAD MANIFEST';
+    el('mfTag').textContent = p.tag;
+    el('mfName').textContent = p.name;
+    el('mfDesc').textContent = p.desc;
+    el('mfStack').innerHTML = p.stack.map(x=>'<span>'+x+'</span>').join('');
+    el('mfLink').href = p.link;
+    mf.classList.add('open'); mf.setAttribute('aria-hidden','false');
+    gsap.fromTo(mf, {y:26, autoAlpha:0}, {y:0, autoAlpha:1, duration:.5, ease:'power3.out'});
+  }
+  function closeManifest(){
+    active = -1;
+    sats.forEach(s=>{ s.sat.userData.active = false; s.sat.userData.targetScale = 1; });
+    mf.classList.remove('open'); mf.setAttribute('aria-hidden','true');
+    gsap.to(mf, {y:16, autoAlpha:0, duration:.3, ease:'power2.in'});
+  }
+  canvas.addEventListener('pointerdown', e=>{
+    const i = pick(e);
+    if(i > -1){ i === active ? closeManifest() : openManifest(i); }
+  });
+  canvas.addEventListener('pointermove', e=>{
+    const hov = pick(e) > -1;
+    const c = document.getElementById('cursor'), r = document.getElementById('cursorRing');
+    if(c) c.classList.toggle('hover', hov);
+    if(r) r.classList.toggle('hover', hov);
+  });
+  el('mfClose').addEventListener('click', closeManifest);
+  addEventListener('keydown', e=>{ if(e.key === 'Escape') closeManifest(); });
+})();
+
+/* ---------- sudo hack easter egg ---------- */
+function hackGranted(){
+  const g = document.getElementById('glitch'); if(!g || g.dataset.busy) return;
+  g.dataset.busy = '1';
+  gsap.timeline({onComplete:()=>{ gsap.set(g, {autoAlpha:0}); delete g.dataset.busy; }})
+    .set(g, {autoAlpha:1})
+    .fromTo(g.querySelector('.gl-slice'), {x:-14}, {x:14, duration:.06, repeat:10, yoyo:true}, 0)
+    .fromTo('#hero', {x:0}, {x:8, duration:.05, repeat:8, yoyo:true, clearProps:'x'}, 0)
+    .fromTo('.gl-text', {scale:.8, autoAlpha:0}, {scale:1, autoAlpha:1, duration:.35, ease:'back.out(2)'}, .25)
+    .to(g, {autoAlpha:0, duration:.4}, '+=1.1');
+}
+(function(){
+  let buf = '';
+  addEventListener('keydown', e=>{
+    if(e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+    if(e.key && e.key.length === 1){
+      buf = (buf + e.key.toLowerCase()).slice(-9);
+      if(buf === 'sudo hack'){ buf = ''; hackGranted(); }
+    }
+  });
+})();
+
+/* ---------- footer command palette ---------- */
+(function(){
+  const input = document.getElementById('cmdInput'), out = document.getElementById('cmdOut');
+  if(!input) return;
+  const esc = t => t.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  input.addEventListener('keydown', e=>{
+    e.stopPropagation();
+    if(e.key === 'Enter'){ run(input.value.trim()); input.value = ''; }
+  });
+  document.querySelector('.contact-terminal').addEventListener('click', ()=>input.focus());
+  function print(lines){
+    lines.forEach((l,i)=>setTimeout(()=>{
+      const d = document.createElement('span');
+      d.className = 'ln ' + (l.c || '');
+      d.innerHTML = l.t;
+      out.appendChild(d);
+    }, i*70));
+  }
+  function run(cmd){
+    if(!cmd) return;
+    const echo = document.createElement('span');
+    echo.className = 'ln';
+    echo.innerHTML = '<span class="p">operator@sat-link:~$</span> ' + esc(cmd);
+    out.appendChild(echo);
+    const c = cmd.toLowerCase();
+    if(c === 'help') print([
+      {t:'available commands:', c:'dim'},
+      {t:'  whoami ........... operator profile'},
+      {t:'  projects ......... deployed operations'},
+      {t:'  skills ........... arsenal summary'},
+      {t:'  contact .......... frequencies & channels'},
+      {t:'  flag ............. you know you want to'},
+      {t:'  sudo hack ........ ?'},
+      {t:'  clear ............ wipe terminal'},
+    ]);
+    else if(c === 'whoami') print([
+      {t:'eli cipher — 19 · india · self-taught'},
+      {t:'web/API offense → satellite & SATCOM link security', c:'dim'},
+      {t:'thm top 10% · funded by bug bounty · going orbital', c:'dim'},
+    ]);
+    else if(c === 'projects') print([
+      {t:'[01] HTTP-FUZZER .......... python web vuln fuzzer'},
+      {t:'[02] SOC-DOCKER-LAB ..... containerized soc pipeline'},
+      {t:'[03] WEB-SECURITY-NOTES . daily portswigger kb (48 commits)'},
+      {t:'[04] EMAIL-HEADER-ANALYZER phishing header scorer'},
+      {t:'full manifests → <a href="#ops">#operations</a>', c:'dim'},
+    ]);
+    else if(c === 'skills' || c === 'arsenal') print([
+      {t:'offense: web/api testing · burp · fuzzing · owasp'},
+      {t:'core: python · js · bash · docker'},
+      {t:'in progress: SDR · gnu radio · satcom · ccsds'},
+      {t:'blue: siem pipelines · wireshark · log analysis'},
+    ]);
+    else if(c === 'contact') print([
+      {t:'email ..... <a href="mailto:alicipher05@gmail.com">alicipher05@gmail.com</a>'},
+      {t:'github .... <a href="https://github.com/eli-cipher" target="_blank" rel="noopener">github.com/eli-cipher</a>'},
+      {t:'thm ....... <a href="https://tryhackme.com/p/elicipher05" target="_blank" rel="noopener">tryhackme.com/p/elicipher05</a>'},
+      {t:'response time < 24h. always monitoring.', c:'dim'},
+    ]);
+    else if(c === 'flag') print([{t:'FLAG{c0ngr4ts_y0u_0wn_th3_sk1es}', c:'warn'}]);
+    else if(c === 'sudo hack'){
+      print([{t:'[+] exploiting operator...', c:'warn'}, {t:'ACCESS GRANTED. you absolute hacker.'}]);
+      hackGranted();
+    }
+    else if(c === 'clear'){ out.innerHTML = ''; }
+    else print([
+      {t:'bash: ' + esc(cmd) + ': command not found', c:'err'},
+      {t:"type 'help' for available commands", c:'dim'},
+    ]);
+  }
+})();
+</script>
 </body>
 </html>
