@@ -113,7 +113,12 @@ h1 .c{color:var(--cyan)}
 .scroll-hint::after{content:'';display:block;width:1px;height:44px;margin:10px auto 0;
   background:linear-gradient(var(--cyan),transparent);animation:drop 1.8s infinite}
 @keyframes drop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
-@media(max-width:900px){.hero-terminal{position:relative;right:auto;bottom:auto;margin:26px 7vw 0}}
+@media(max-width:900px){
+  #hero{height:auto;min-height:100vh;padding:118px 0 90px}
+  .hero-overlay{position:relative;inset:auto;padding:0 7vw}
+  .hero-terminal{position:relative;right:auto;bottom:auto;margin:34px 7vw 0;width:auto}
+  .scroll-hint{display:none}
+}
 
 /* ---------- sections ---------- */
 section{position:relative;padding:120px 7vw}
@@ -266,6 +271,12 @@ footer b{color:var(--green);font-weight:400}
 #cmdOut .ln{display:block;white-space:pre-wrap;word-break:break-word}
 #cmdOut a{color:var(--green);text-decoration:none;border-bottom:1px dashed rgba(57,255,136,.4)}
 
+/* ---------- RF spectrum analyzer ---------- */
+.spectrum-wrap{margin-top:26px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px}
+.spectrum-head{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--cyan);margin-bottom:14px}
+#spectrum{width:100%;height:180px;display:block;border-radius:6px;background:rgba(4,6,13,.5)}
+[data-theme="light"] #spectrum{background:rgba(12,32,64,.05)}
+
 /* ---------- mobile attack-chain fallback ---------- */
 .chain-mobile{height:auto!important;padding:100px 7vw 120px!important}
 .chain-mobile .attack-hint,.chain-mobile .ac-progress{display:none}
@@ -370,6 +381,7 @@ footer b{color:var(--green);font-weight:400}
       <div class="coord-row"><span>THM RANK</span><b>TOP 10% · CLIMBING</b></div>
       <div class="coord-row"><span>LEARNING</span><b>SDR · GNU RADIO · SATCOM</b></div>
       <div class="coord-row"><span>STATUS</span><b style="color:var(--cyan)">LISTENING…</b></div>
+      <div class="coord-row"><span>ISS POSITION</span><b id="issPos" style="color:var(--amber)">ACQUIRING…</b></div>
       <canvas class="waveform" id="wave"></canvas>
     </div>
   </div>
@@ -407,6 +419,10 @@ footer b{color:var(--green);font-weight:400}
       <div class="skill"><b>Attack Simulation</b><span class="lvl">███████░░░</span></div>
       <div class="skill"><b>Log Analysis</b><span class="lvl">██████░░░░</span></div>
     </div>
+  </div>
+  <div class="spectrum-wrap reveal">
+    <div class="spectrum-head">// RF SPECTRUM MONITOR — 435.000 – 438.000 MHz · UHF SATCOM DOWNLINK · HOVER TO TUNE</div>
+    <canvas id="spectrum"></canvas>
   </div>
 </section>
 <!-- ============ ATTACK CHAIN ============ -->
@@ -905,6 +921,68 @@ function hackGranted(){
       if(buf === 'sudo hack'){ buf = ''; hackGranted(); }
     }
   });
+})();
+
+/* ---------- live ISS position ---------- */
+(function(){
+  const el = document.getElementById('issPos'); if(!el) return;
+  async function tick(){
+    try{
+      const r = await fetch('https://api.wheretheiss.at/v1/satellites/25544');
+      if(!r.ok) throw 0;
+      const d = await r.json();
+      el.textContent = d.latitude.toFixed(2) + '\u00B0, ' + d.longitude.toFixed(2) + '\u00B0 · alt ' + d.altitude.toFixed(0) + 'km';
+      el.style.color = 'var(--green)';
+    }catch(e){
+      el.textContent = 'SIGNAL LOST — OFFLINE';
+      el.style.color = 'var(--red)';
+    }
+  }
+  tick(); setInterval(tick, 5000);
+})();
+
+/* ---------- RF spectrum analyzer ---------- */
+(function(){
+  const c = document.getElementById('spectrum'); if(!c) return;
+  const x = c.getContext('2d');
+  let W, H;
+  function size(){ W = c.width = c.clientWidth * 2; H = c.height = c.clientHeight * 2; }
+  addEventListener('resize', size); size();
+  const N = 96;
+  const vals = new Float32Array(N);
+  let t = 0, mx = -1;
+  c.addEventListener('mousemove', e=>{ const r = c.getBoundingClientRect(); mx = (e.clientX - r.left) / r.width; });
+  c.addEventListener('mouseleave', ()=>{ mx = -1; });
+  function carrier(i, center, width, amp){ const d = (i - center) / width; return amp * Math.exp(-d * d); }
+  (function draw(){
+    requestAnimationFrame(draw);
+    t += .016;
+    x.clearRect(0, 0, W, H);
+    x.strokeStyle = 'rgba(120,150,190,.12)'; x.lineWidth = 1;
+    for(let g = 0; g <= 4; g++){ const y = H * g / 4; x.beginPath(); x.moveTo(0, y); x.lineTo(W, y); x.stroke(); }
+    for(let v = 0; v <= 8; v++){ const gx = W * v / 8; x.beginPath(); x.moveTo(gx, 0); x.lineTo(gx, H); x.stroke(); }
+    const bw = W / N;
+    for(let i = 0; i < N; i++){
+      let v = .18 + .1 * Math.sin(i * .7 + t * 2.1) * Math.sin(i * .13 + t * .7);
+      v += carrier(i, 30 + 8 * Math.sin(t * .23), 3.2, .75);
+      v += carrier(i, 62 + 6 * Math.sin(t * .31 + 2), 2.4, .6);
+      v += carrier(i, 80, 1.6, .45);
+      v = Math.max(.04, Math.min(1, v + (Math.random() - .5) * .05));
+      vals[i] += (v - vals[i]) * .3;
+      const h = vals[i] * H * .92;
+      x.fillStyle = vals[i] > .62 ? '#39ff88' : 'rgba(34,211,238,' + (.25 + vals[i] * .55) + ')';
+      x.fillRect(i * bw + 1, H - h, bw - 2, h);
+    }
+    x.fillStyle = 'rgba(93,111,138,.95)'; x.font = '19px JetBrains Mono';
+    for(let v = 0; v <= 4; v++){ x.fillText((435 + v * .75).toFixed(3) + ' MHz', W * v / 4 + 10, H - 12); }
+    if(mx >= 0){
+      const f = 435 + mx * 3;
+      x.strokeStyle = '#ff3860'; x.lineWidth = 2;
+      x.beginPath(); x.moveTo(mx * W, 0); x.lineTo(mx * W, H); x.stroke();
+      x.fillStyle = '#ff3860';
+      x.fillText(f.toFixed(3) + ' MHz \u25B2', Math.min(mx * W + 10, W - 150), 30);
+    }
+  })();
 })();
 
 /* ---------- footer command palette ---------- */
