@@ -6,6 +6,27 @@
 <title>OPERATOR//SAT-LINK — Satellite Cybersecurity Portfolio</title>
 <meta name="description" content="Satellite communications & offensive space cybersecurity portfolio. RF signals, orbital recon, attack chains.">
 <meta name="theme-color" content="#05070f">
+<meta name="author" content="Eli Cipher">
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="13" fill="%2305070f"/><circle cx="32" cy="34" r="8" fill="%2339ff88"/><ellipse cx="32" cy="34" rx="23" ry="9" fill="none" stroke="%2322d3ee" stroke-width="2.6" transform="rotate(-22 32 34)"/><circle cx="51" cy="22" r="3.4" fill="%23ff3860"/></svg>'>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Eli Cipher",
+  "alternateName": "Mohit Vaishnav",
+  "jobTitle": "Security Researcher — Satellite & Space Systems",
+  "description": "Self-taught offensive security researcher: web/API offense bug bounty → satellite, RF/SATCOM and space systems security.",
+  "email": "mailto:elicipher05@gmail.com",
+  "sameAs": [
+    "https://github.com/eli-cipher",
+    "https://www.linkedin.com/in/mohitvaishnav05",
+    "https://x.com/elicipher_",
+    "https://tryhackme.com/p/elicipher05",
+    "https://www.youtube.com/@elicipher05",
+    "https://www.instagram.com/elicipher_"
+  ]
+}
+</script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="ELI CIPHER // SAT-LINK — Satellite Cybersecurity Portfolio">
 <meta property="og:description" content="19-y/o self-taught security researcher. Web & API offense → satellite, RF/SATCOM & space systems security. Every system has a cipher.">
@@ -216,6 +237,10 @@ footer{text-align:center;padding:34px;font-family:var(--mono);font-size:11px;col
 footer b{color:var(--green);font-weight:400}
 
 /* ================= PHASE 2 ================= */
+/* ---------- skip link ---------- */
+.skip-link{position:fixed;top:-60px;left:18px;z-index:500;background:var(--green);color:#04140b;font-family:var(--mono);font-size:12px;padding:10px 16px;border-radius:6px;text-decoration:none;font-weight:700;letter-spacing:1px;transition:top .25s}
+.skip-link:focus{top:14px}
+
 /* ---------- writeups / blog ---------- */
 .wu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:20px}
 .wu-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:26px;display:flex;flex-direction:column;gap:12px;text-decoration:none;transition:all .35s;position:relative;overflow:hidden}
@@ -319,6 +344,7 @@ footer b{color:var(--green);font-weight:400}
 </head>
 <body>
 
+<a class="skip-link" href="#about">SKIP TO CONTENT</a>
 <div class="scanlines"></div>
 <div class="vignette"></div>
 
@@ -692,6 +718,8 @@ gsap.registerPlugin(ScrollTrigger);
 
   const clock = new THREE.Clock();
   const v = new THREE.Vector3();
+  let heroInView = true;
+  new IntersectionObserver(([e])=>{ heroInView = e.isIntersecting; }, {threshold:.02}).observe(canvas);
   (function animate(){
     requestAnimationFrame(animate);
     const t = clock.getElapsedTime();
@@ -716,7 +744,7 @@ gsap.registerPlugin(ScrollTrigger);
       const pos = s.beam.geometry.attributes.position;
       pos.setXYZ(0, v.x, v.y, v.z); pos.setXYZ(1, 0,0,0); pos.needsUpdate = true;
     });
-    renderer.render(scene, camera);
+    if(heroInView && !document.hidden) renderer.render(scene, camera);
   })();
 })();
 
@@ -757,8 +785,12 @@ gsap.registerPlugin(ScrollTrigger);
   function size(){ c.width = c.clientWidth*2; c.height = c.clientHeight*2; }
   addEventListener('resize', size); size();
   let t=0;
+  let inView = true;
+  new IntersectionObserver(([e])=>{ inView = e.isIntersecting; }, {threshold:.05}).observe(c);
+  const rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
   (function draw(){
     requestAnimationFrame(draw);
+    if(!inView || document.hidden || rm) return;
     t += .03;
     const w=c.width, h=c.height;
     x.clearRect(0,0,w,h);
@@ -1005,8 +1037,12 @@ function hackGranted(){
   c.addEventListener('mousemove', e=>{ const r = c.getBoundingClientRect(); mx = (e.clientX - r.left) / r.width; });
   c.addEventListener('mouseleave', ()=>{ mx = -1; });
   function carrier(i, center, width, amp){ const d = (i - center) / width; return amp * Math.exp(-d * d); }
+  let inView = true;
+  new IntersectionObserver(([e])=>{ inView = e.isIntersecting; }, {threshold:.05}).observe(c);
+  const rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
   (function draw(){
     requestAnimationFrame(draw);
+    if(!inView || document.hidden || rm) return;
     t += .016;
     x.clearRect(0, 0, W, H);
     x.strokeStyle = 'rgba(120,150,190,.12)'; x.lineWidth = 1;
