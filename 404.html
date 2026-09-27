@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 // SIGNAL LOST — SAT-LINK</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="13" fill="%2305070f"/><circle cx="32" cy="34" r="8" fill="%2339ff88"/><ellipse cx="32" cy="34" rx="23" ry="9" fill="none" stroke="%2322d3ee" stroke-width="2.6" transform="rotate(-22 32 34)"/><circle cx="51" cy="22" r="3.4" fill="%23ff3860"/></svg>'>
+<style>
+:root{--bg:#05070f;--green:#39ff88;--cyan:#22d3ee;--red:#ff3860;--muted:#5d6f8a;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--muted);font-family:var(--mono);min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0 1px,transparent 1px 3px);pointer-events:none}
+.star{position:fixed;width:2px;height:2px;background:#8fb8ff;border-radius:50%;opacity:.5;animation:tw 3s infinite}
+@keyframes tw{0%,100%{opacity:.15}50%{opacity:.7}}
+.box{width:min(560px,88vw);border:1px solid rgba(255,56,96,.3);border-radius:12px;background:rgba(6,10,20,.85);padding:38px}
+.bar{display:flex;gap:8px;margin-bottom:26px}
+.bar i{width:10px;height:10px;border-radius:50%}
+.bar i:nth-child(1){background:#ff5f57}.bar i:nth-child(2){background:#febc2e}.bar i:nth-child(3){background:#28c840}
+h1{color:var(--red);font-size:clamp(2rem,6vw,3.2rem);letter-spacing:4px;margin-bottom:10px;text-shadow:0 0 24px rgba(255,56,96,.5)}
+.p{color:var(--cyan);font-size:13px;line-height:2}
+.g{color:var(--green)}
+a{color:var(--green);text-decoration:none;border:1px solid rgba(57,255,136,.4);padding:10px 20px;border-radius:6px;display:inline-block;margin-top:26px;font-size:12px;letter-spacing:2px}
+a:hover{background:rgba(57,255,136,.1)}
+</style>
+</head>
+<body>
+<div class="box">
+  <div class="bar"><i></i><i></i><i></i></div>
+  <h1>SIGNAL LOST</h1>
+  <p class="p"><span class="g">operator@sat-link:~$</span> ./locate --coordinates <span style="color:var(--red)">"$URL"</span><br>
+  [ERR 404] coordinates not found in orbital catalog<br>
+  [+] debris field scanned .......... 0 matches<br>
+  [+] last known position ........... <a href="/" style="border:none;padding:0;margin:0;display:inline;color:var(--green)">home base</a></p>
+  <a href="/">← RETURN TO BASE</a>
+</div>
+<script>
+for(let i=0;i<70;i++){const s=document.createElement('span');s.className='star';s.style.left=Math.random()*100+'vw';s.style.top=Math.random()*100+'vh';s.style.animationDelay=(Math.random()*3)+'s';document.body.appendChild(s);}
+</script>
+</body>
+</html>
