@@ -216,6 +216,29 @@ footer{text-align:center;padding:34px;font-family:var(--mono);font-size:11px;col
 footer b{color:var(--green);font-weight:400}
 
 /* ================= PHASE 2 ================= */
+/* ---------- writeups / blog ---------- */
+.wu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:20px}
+.wu-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:26px;display:flex;flex-direction:column;gap:12px;text-decoration:none;transition:all .35s;position:relative;overflow:hidden}
+.wu-card::after{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--cyan),transparent);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.wu-card:hover{transform:translateY(-6px);border-color:rgba(34,211,238,.35);box-shadow:0 22px 55px rgba(0,0,0,.45)}
+.wu-card:hover::after{transform:scaleX(1)}
+.wu-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wu-date{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--muted)}
+.wu-tag{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--amber);border:1px solid rgba(255,176,32,.3);padding:3px 10px;border-radius:99px;white-space:nowrap}
+.wu-card h3{color:var(--head);font-size:1.05rem;line-height:1.35}
+.wu-card p{color:var(--muted);font-size:.87rem;font-weight:300;flex:1}
+.wu-meta{display:flex;gap:16px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.wu-meta span{display:flex;align-items:center;gap:6px}
+.wu-meta svg{width:12px;height:12px}
+.wu-soon{opacity:.72}
+.wu-soon:hover{opacity:1}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  html{scroll-behavior:auto}
+}
+
 /* ---------- boot loader ---------- */
 #boot{position:fixed;inset:0;z-index:460;background:var(--bg);display:flex;align-items:center;justify-content:center}
 .boot-inner{width:min(460px,86vw);text-align:center;font-family:var(--mono)}
@@ -324,7 +347,7 @@ footer b{color:var(--green);font-weight:400}
   <div class="logo"><span class="dot"></span>ELI&nbsp;CIPHER<em>//</em>SAT-LINK</div>
   <div class="nav-links">
     <a href="#about">Profile</a><a href="#arsenal">Arsenal</a>
-    <a href="#attack">Attack&nbsp;Chain</a><a href="#ops">Operations</a><a href="#contact">Uplink</a>
+    <a href="#attack">Attack&nbsp;Chain</a><a href="#ops">Operations</a><a href="#writeups">Writeups</a><a href="#contact">Uplink</a>
   </div>
   <div style="display:flex;align-items:center;gap:12px">
     <button id="themeToggle" title="Toggle theme" style="background:none;border:1px solid var(--line);border-radius:8px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;color:var(--muted);cursor:pointer;transition:all .3s">
@@ -399,7 +422,7 @@ footer b{color:var(--green);font-weight:400}
       <div class="skill"><b>OWASP Top 10</b><span class="lvl">████████░░</span></div>
     </div>
     <div class="skill-cat">
-      <h4><i data-lucide="code-2"></i>LANGUAGES / CORE</h4>
+      <h4><i data-lucide="code-xml"></i>LANGUAGES / CORE</h4>
       <div class="skill"><b>Python</b><span class="lvl">████████░░</span></div>
       <div class="skill"><b>JavaScript / HTML / CSS</b><span class="lvl">█████████░</span></div>
       <div class="skill"><b>Bash / Linux</b><span class="lvl">███████░░░</span></div>
@@ -455,7 +478,7 @@ footer b{color:var(--green);font-weight:400}
       <div class="op-top"><i data-lucide="bug"></i><span class="op-tag">PYTHON · OFFENSE</span></div>
       <h3>HTTP-FUZZER</h3>
       <p>Python-based HTTP request fuzzer that hunts for web vulnerabilities — XSS, SQL injection, and directory traversal — built from scratch to understand attacks at the request level, not just point tools.</p>
-      <div class="op-meta"><span><i data-lucide="code-2"></i>Python</span><span><i data-lucide="target"></i>XSS · SQLi · LFI</span></div>
+      <div class="op-meta"><span><i data-lucide="code-xml"></i>Python</span><span><i data-lucide="target"></i>XSS · SQLi · LFI</span></div>
     </a>
     <a class="op-card" href="https://github.com/eli-cipher" target="_blank" rel="noopener">
       <div class="op-top"><i data-lucide="container"></i><span class="op-tag">DOCKER · BLUE TEAM</span></div>
@@ -473,7 +496,7 @@ footer b{color:var(--green);font-weight:400}
       <div class="op-top"><i data-lucide="mail-warning"></i><span class="op-tag">PYTHON · PHISHING</span></div>
       <h3>EMAIL-HEADER-ANALYZER</h3>
       <p>Python tool that dissects email headers to detect phishing, spam, and suspicious activity — extracts key fields and IPs, then scores the risk.</p>
-      <div class="op-meta"><span><i data-lucide="code-2"></i>Python</span><span><i data-lucide="shield-check"></i>Phishing · OSINT</span></div>
+      <div class="op-meta"><span><i data-lucide="code-xml"></i>Python</span><span><i data-lucide="shield-check"></i>Phishing · OSINT</span></div>
     </a>
   </div>
 </section>
@@ -488,36 +511,64 @@ footer b{color:var(--green);font-weight:400}
     <div class="ctf-stat"><div class="num" data-count="4">0</div><div class="lbl">Tools &amp; Labs Shipped</div></div>
   </div>
   <div class="writeups reveal">
-    <a href="https://tryhackme.com/p/elicipher05" target="_blank" rel="noopener">TryHackMe Hackers Holiday Challenge — 2026 participant <span>CTF · 2026</span></a>
-    <a href="#">Satellite telecommand replay: when weak crypto meets LEO <span>INCOMING TRANSMISSION</span></a>
-    <a href="#">From web payloads to RF payloads: my move into SATCOM <span>INCOMING TRANSMISSION</span></a>
-    <a href="#">PortSwigger lab notes: 10 vuln categories, documented daily <span>ONGOING · LIVE</span></a>
+    <a href="#writeups">Field notes, CTF writeups &amp; research logs → relocated to section 06 <span>VIEW ALL →</span></a>
+  </div>
+</section>
+
+<!-- ============ WRITEUPS / BLOG ============ -->
+<section id="writeups">
+  <div class="sec-head reveal"><span class="sec-num">06</span><h2 class="sec-title">Field Notes &amp; Writeups</h2><span class="sec-line"></span></div>
+  <div class="wu-grid reveal">
+    <a class="wu-card" href="https://github.com/eli-cipher/web-security-notes" target="_blank" rel="noopener">
+      <div class="wu-top"><span class="wu-date">ONGOING · DAILY</span><span class="wu-tag">WEB · RESEARCH</span></div>
+      <h3>PortSwigger Labs, Documented: 10 Vulnerability Categories</h3>
+      <p>Every solved lab logged as Approach → Why → Tool. A public knowledge base at 48 commits and counting — the receipts of a self-taught operator.</p>
+      <div class="wu-meta"><span><i data-lucide="clock"></i>living document</span><span><i data-lucide="arrow-up-right"></i>read the notes</span></div>
+    </a>
+    <a class="wu-card" href="https://tryhackme.com/p/elicipher05" target="_blank" rel="noopener">
+      <div class="wu-top"><span class="wu-date">2026</span><span class="wu-tag">CTF</span></div>
+      <h3>TryHackMe Hackers Holiday Challenge — Participant Notes</h3>
+      <p>Room-by-room breakdowns: recon shortcuts, the payloads that landed, and the rabbit holes that quietly ate three hours.</p>
+      <div class="wu-meta"><span><i data-lucide="clock"></i>multi-part series</span><span><i data-lucide="arrow-up-right"></i>view profile</span></div>
+    </a>
+    <a class="wu-card wu-soon" href="#">
+      <div class="wu-top"><span class="wu-date">INCOMING TRANSMISSION</span><span class="wu-tag">SATCOM</span></div>
+      <h3>From Web Payloads to RF Payloads: Moving into SATCOM</h3>
+      <p>Why I'm leaving pure web offense for the link layer most hackers never touch — SDR rigs on a $0 budget, GNU Radio first steps, and what "signal" actually means.</p>
+      <div class="wu-meta"><span><i data-lucide="clock"></i>in draft</span></div>
+    </a>
+    <a class="wu-card wu-soon" href="#">
+      <div class="wu-top"><span class="wu-date">INCOMING TRANSMISSION</span><span class="wu-tag">SATCOM · CRYPTO</span></div>
+      <h3>Satellite Telecommand Replay: When Weak Crypto Meets LEO</h3>
+      <p>A simulated look at replay attacks against unencrypted telecommand uplinks — CCSDS frames, forged TCs, and owned telemetry.</p>
+      <div class="wu-meta"><span><i data-lucide="clock"></i>in draft</span></div>
+    </a>
   </div>
 </section>
 
 <!-- ============ CONTACT ============ -->
 <section id="contact">
-  <div class="sec-head reveal"><span class="sec-num">06</span><h2 class="sec-title">Establish Uplink</h2><span class="sec-line"></span></div>
+  <div class="sec-head reveal"><span class="sec-num">07</span><h2 class="sec-title">Establish Uplink</h2><span class="sec-line"></span></div>
   <div class="contact-terminal reveal">
     <div class="ht-bar"><span></span><span></span><span></span><em>uplink — secure channel</em></div>
     <div class="ct-body">
       <span class="p">operator@sat-link:~$</span> ./contact --initiate<br>
       <span class="dim" style="color:var(--muted)">[+] encrypted channel established ....... OK</span><br>
       <span class="dim" style="color:var(--muted)">[+] handshake verified .................. OK</span><br>
-      &gt; DROP A TRANSMISSION: <a href="mailto:alicipher05@gmail.com">alicipher05@gmail.com</a><br>
+      &gt; DROP A TRANSMISSION: <a href="https://mail.google.com/mail/?view=cm&fs=1&to=elicipher05@gmail.com">elicipher05@gmail.com</a><br>
       &gt; FREQUENCY: always monitoring. Response time &lt; 24h.
       <br><span class="p">operator@sat-link:~$</span> <input id="cmdInput" type="text" autocomplete="off" spellcheck="false" placeholder="type 'help'" aria-label="terminal command input">
       <div id="cmdOut"></div>
     </div>
   </div>
   <div class="socials reveal">
-    <a href="https://github.com/eli-cipher" target="_blank" rel="noopener" title="GitHub"><i data-lucide="github"></i></a>
-    <a href="https://www.linkedin.com/in/mohitvaishnav05" target="_blank" rel="noopener" title="LinkedIn"><i data-lucide="linkedin"></i></a>
-    <a href="https://x.com/elicipher_" target="_blank" rel="noopener" title="X"><i data-lucide="twitter"></i></a>
+    <a href="https://github.com/eli-cipher" target="_blank" rel="noopener" title="GitHub"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+    <a href="https://www.linkedin.com/in/mohitvaishnav05" target="_blank" rel="noopener" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg></a>
+    <a href="https://x.com/elicipher_" target="_blank" rel="noopener" title="X"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg></a>
     <a href="https://tryhackme.com/p/elicipher05" target="_blank" rel="noopener" title="TryHackMe"><i data-lucide="flag"></i></a>
-    <a href="https://www.youtube.com/@elicipher05" target="_blank" rel="noopener" title="YouTube"><i data-lucide="youtube"></i></a>
-    <a href="https://www.instagram.com/elicipher_" target="_blank" rel="noopener" title="Instagram"><i data-lucide="instagram"></i></a>
-    <a href="mailto:alicipher05@gmail.com" title="Email"><i data-lucide="mail"></i></a>
+    <a href="https://www.youtube.com/@elicipher05" target="_blank" rel="noopener" title="YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+    <a href="https://www.instagram.com/elicipher_" target="_blank" rel="noopener" title="Instagram"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg></a>
+    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=elicipher05@gmail.com" title="Email"><i data-lucide="mail"></i></a>
   </div>
 </section>
 
@@ -741,7 +792,7 @@ gsap.registerPlugin(ScrollTrigger);
     }
     term.innerHTML = html + '<span class="cursor"></span>';
   }
-  if(matchMedia('(max-width:900px)').matches){
+  if(matchMedia('(max-width:900px)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches){
     document.getElementById('attackStage').classList.add('chain-mobile');
     stages.forEach((el,i)=>{ el.classList.add('done'); el.style.opacity = 1; if(i===4) el.classList.add('active','pwned'); });
     renderTerm(4); bar.style.width = '100%';
@@ -1039,7 +1090,7 @@ function hackGranted(){
       {t:'blue: siem pipelines · wireshark · log analysis'},
     ]);
     else if(c === 'contact') print([
-      {t:'email ..... <a href="mailto:alicipher05@gmail.com">alicipher05@gmail.com</a>'},
+      {t:'email ..... <a href="https://mail.google.com/mail/?view=cm&fs=1&to=elicipher05@gmail.com">elicipher05@gmail.com</a>'},
       {t:'github .... <a href="https://github.com/eli-cipher" target="_blank" rel="noopener">github.com/eli-cipher</a>'},
       {t:'thm ....... <a href="https://tryhackme.com/p/elicipher05" target="_blank" rel="noopener">tryhackme.com/p/elicipher05</a>'},
       {t:'response time < 24h. always monitoring.', c:'dim'},
