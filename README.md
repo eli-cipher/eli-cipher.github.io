@@ -1,4 +1,4 @@
-# ELI CIPHER // SAT-LINK — Portfolio
+# ELI CIPHER — Portfolio
 
 Satellite communications & offensive space cybersecurity portfolio.
 Single-file vanilla HTML/CSS/JS — no build step, $0 stack.
