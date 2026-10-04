@@ -13,9 +13,7 @@
   "@context": "https://schema.org",
   "@type": "Person",
   "name": "Eli Cipher",
-  "alternateName": "Mohit Vaishnav",
-  "jobTitle": "Security Researcher — Satellite & Space Systems",
-  "description": "Self-taught offensive security researcher: web/API offense bug bounty → satellite, RF/SATCOM and space systems security.",
+  "description": "Self-taught, focused on web & API security and satellite & space systems security.",
   "email": "mailto:contact.elicipher@gmail.com",
   "sameAs": [
     "https://github.com/eli-cipher",
@@ -34,7 +32,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://unpkg.com/lucide@1.52.0/dist/umd/lucide.min.js" integrity="sha384-SSRIJfpvnhji4rCcULgpNXRJjQ9P/odU9OaWxSumsZiokvJ7zAu4PGQVWyWxTG3u" crossorigin="anonymous"></script>
 <style>
 :root{
   --bg:#05070f;
@@ -109,7 +107,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content
 h1.hero-title{font-size:clamp(2.6rem,7.2vw,6rem);line-height:1.02;color:var(--head);font-weight:700;letter-spacing:-2px;max-width:820px}
 h1 .g{color:transparent;-webkit-text-stroke:1.5px var(--green)}
 h1 .c{color:var(--cyan)}
-.hero-sub{margin-top:22px;max-width:560px;color:var(--muted);font-size:clamp(.95rem,1.4vw,1.1rem);font-weight:300}
+.hero-sub{margin-top:22px;max-width:560px;color:var(#a9b6cc);font-size:clamp(.95rem,1.4vw,1.1rem);font-weight:400}
 .hero-cta{margin-top:34px;display:flex;gap:16px;pointer-events:auto}
 .btn{font-family:var(--mono);font-size:13px;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;
   padding:14px 26px;border-radius:4px;transition:all .3s;display:inline-flex;align-items:center;gap:9px}
@@ -366,7 +364,7 @@ footer b{color:var(--green);font-weight:400}
 <!-- sudo hack glitch -->
 <div id="glitch">
   <div class="gl-slice"></div>
-  <div class="gl-text">ACCESS GRANTED<span class="gl-sub">ROOT SHELL ESTABLISHED // CLEARANCE LEVEL-5 // nice find, operator.</span></div>
+  <div class="gl-text">ACCESS GRANTED<span class="gl-sub">ROOT SHELL ESTABLISHED // nice find, operator.</span></div>
 </div>
 
 <nav>
@@ -387,9 +385,9 @@ footer b{color:var(--green);font-weight:400}
 <header id="hero">
   <canvas id="space"></canvas>
   <div class="hero-overlay">
-    <div class="hero-tag">ELI CIPHER — SATELLITE &amp; SPACE SYSTEMS SECURITY</div>
-    <h1 class="hero-title">EVERY SYSTEM<br>HAS A <span class="g">CIPHER.</span><br><span class="c">I FIND IT.</span></h1>
-    <p class="hero-sub">19-year-old self-taught security researcher. Started with web &amp; API offense — now moving up the stack, straight into orbit: satellite links, RF/SATCOM, and space systems.</p>
+    <div class="hero-tag">ELI CIPHER — WEB & API SECURITY → SATELLITE & SPACE SYSTEMS SECURITY</div>
+    <h1 class="hero-title">EVERY SYSTEM<br>HAS A <span class="g">CIPHER.</span><br><span class="c" style="font-size: .75em;">ON THE WAY TO FIND IT</span></h1>
+    <p class="hero-sub">19 years old and self-taught. I work on web & API security, and I'm taking it all the way to orbit: satellite & space systems security.</p>
     <div class="hero-cta">
       <a class="btn btn-primary" href="#ops"><i data-lucide="crosshair"></i>View Operations</a>
       <a class="btn btn-ghost" href="#contact"><i data-lucide="satellite-dish"></i>Establish Uplink</a>
@@ -753,11 +751,11 @@ gsap.registerPlugin(ScrollTrigger);
   const el = document.getElementById('heroTerm');
   const lines = [
     {t:'$ ./init-groundstation.sh', c:'p'},
-    {t:'[+] SDR devices found ......... 2', c:''},
-    {t:'[+] antenna tracking .......... LOCKED', c:''},
-    {t:'[+] decoding downlink ......... CCSDS TM', c:''},
-    {t:'[!] warning: unencrypted telemetry detected', c:'warn'},
-    {t:'$ whoami → operator // clearance: LEVEL-5', c:'p'},
+    {t:'[+] ONLINE ...... web & API security', c:''},
+    {t:'[+] LOADING ..... satellite & space systems security', c:''},
+    {t:'[+] origin ...... self-taught', c:''},
+    {t:'[!] target: every system with a cipher', c:'warn'},
+    {t:'$ whoami → eli cipher', c:'p'},
     {t:'> welcome, visitor. signal acquired.', c:''},
   ];
   let li=0, ci=0, out='';
@@ -881,9 +879,11 @@ document.querySelectorAll('[data-count]').forEach(el=>{
   const boot = document.getElementById('boot'); if(!boot) return;
   const bar = document.getElementById('bootBar'), pct = document.getElementById('bootPct'),
         msg = document.getElementById('bootMsg'), log = document.getElementById('bootLog');
-  const logs = ['> initializing ground station hardware...','> SDR handshake .......... OK',
-                '> antenna servo lock ..... OK','> decrypting downlink .... OK',
-                '> operator session ....... AUTHORIZED'];
+  const logs = ['> initializing eli-cipher.sys...',
+              '> web & API security ...... ONLINE',
+              '> space systems security .. LOADING',
+              '> broken access control ............... TARGETED',
+              '> session ............................. READY'];
   const state = {v:0}; let finished = false;
   function finish(){
     if(finished) return; finished = true;
@@ -1109,8 +1109,8 @@ function hackGranted(){
     ]);
     else if(c === 'whoami') print([
       {t:'eli cipher — 19 · india · self-taught'},
-      {t:'web/API offense → satellite & SATCOM link security', c:'dim'},
-      {t:'thm top 10% · funded by bug bounty · going orbital', c:'dim'},
+      {t:'web & API security → satellite & space systems security', c:'dim'},
+      {t:'thm top 9% · focus: broken access control · going orbital', c:'dim'},
     ]);
     else if(c === 'projects') print([
       {t:'[01] HTTP-FUZZER .......... python web vuln fuzzer'},
@@ -1122,7 +1122,8 @@ function hackGranted(){
     else if(c === 'skills' || c === 'arsenal') print([
       {t:'offense: web/api testing · burp · fuzzing · owasp'},
       {t:'core: python · js · bash · docker'},
-      {t:'in progress: SDR · gnu radio · satcom · ccsds'},
+      {t:'focus: broken access control · business logic flaws'},
+      {t:'next: satellite & space systems security'},
       {t:'blue: siem pipelines · wireshark · log analysis'},
     ]);
     else if(c === 'contact') print([
