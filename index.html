@@ -344,6 +344,7 @@ footer b{color:var(--green);font-weight:400}
 [data-theme="light"] .btn-primary{box-shadow:0 0 24px rgba(10,157,84,.25)}
 #themeToggle:hover{color:var(--green);border-color:rgba(57,255,136,.4)}
 </style>
+<base target="_blank">
 </head>
 <body>
 
@@ -524,6 +525,12 @@ footer b{color:var(--green);font-weight:400}
       <p>Python tool that dissects email headers to detect phishing, spam, and suspicious activity — extracts key fields and IPs, then scores the risk.</p>
       <div class="op-meta"><span><i data-lucide="code-xml"></i>Python</span><span><i data-lucide="shield-check"></i>Phishing · OSINT</span></div>
     </a>
+    <a class="op-card" href="https://github.com/eli-cipher/aerospace-security-notes" target="_blank" rel="noopener">
+      <div class="op-top"><i data-lucide="satellite"></i><span class="op-tag">SATCOM · RESEARCH</span></div>
+      <h3>AEROSPACE-SECURITY-NOTES</h3>
+      <p>My research knowledge base for aerospace & satellite security — SATCOM link security, RF fundamentals, CCSDS frame structure and space systems attack surfaces, documented as I learn it on the way to orbit.</p>
+      <div class="op-meta"><span><i data-lucide="radio-tower"></i>SATCOM · CCSDS</span><span><i data-lucide="notebook-pen"></i>Research Notes</span></div>
+    </a>
   </div>
 </section>
 
@@ -669,7 +676,8 @@ gsap.registerPlugin(ScrollTrigger);
   const orbitDefs = [
     {r:3.3, tilt:[.5,0,.15], speed:.34, color:GREEN},
     {r:4.1, tilt:[-.35,.4,0], speed:-.22, color:CYAN},
-    {r:4.8, tilt:[.2,-.3,.5], speed:.16, color:0xffb020}
+    {r:4.8, tilt:[.2,-.3,.5], speed:.16, color:0xffb020},
+    {r:3.7, tilt:[-.25,-.45,.3], speed:-.27, color:0xff3860}
   ];
   const beamMat = new THREE.LineBasicMaterial({color:GREEN,transparent:true,opacity:0});
   orbitDefs.forEach(d=>{
@@ -941,6 +949,9 @@ document.querySelectorAll('[data-count]').forEach(el=>{
     { code:'SAT-03', name:'WEB-SECURITY-NOTES', tag:'RESEARCH · DAILY',
       desc:'Daily-updated knowledge base from PortSwigger Web Security Academy labs, organized across 10 vulnerability categories. Every solved lab logged as Approach → Why → Tool. 48 commits and counting.',
       stack:['48 commits','10 categories','PortSwigger'], link:'https://github.com/eli-cipher/web-security-notes' },
+    { code:'SAT-04', name:'AEROSPACE-SECURITY-NOTES', tag:'SATCOM · RESEARCH',
+      desc:'My research knowledge base for aerospace & satellite security — SATCOM link security, RF fundamentals, CCSDS frame structure and space systems attack surfaces, documented as I learn it on the way to orbit.',
+      stack:['SATCOM','RF Fundamentals','CCSDS'], link:'https://github.com/eli-cipher/aerospace-security-notes' },
   ];
   const ray = new THREE.Raycaster(), ptr = new THREE.Vector2();
   const mf = document.getElementById('manifest');
